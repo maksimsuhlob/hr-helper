@@ -3,10 +3,14 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 import Login from './pages/login/Login';
 import Profile from './pages/profile/Profile';
 import {AppContext} from './utils/appContext';
-import {useReducer} from 'react';
+import {useEffect, useReducer} from 'react';
+import Roles from './pages/roles/Roles';
+import firebase from 'firebase';
+import {PermissionKeys} from './utils/constants';
 
 const initialState = {
-  profile: {}
+  profile: null,
+  roles: null
 };
 
 function init() {
@@ -20,6 +24,9 @@ function reducer(state, action) {
       return {...state};
     case 'LOGOUT':
       state.profile = null;
+      return {...state};
+    case 'SET_ROLES':
+      state.roles = {...action.payload};
       return {...state};
     default:
       throw new Error();
@@ -48,22 +55,47 @@ function PrivateRoute({children, isAuthorize, ...rest}) {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState, init);
+  useEffect(() => {
+    firebase.database().ref(`/roles`).get()
+      .then(data => {
+        dispatch({
+          type: 'SET_ROLES',
+          payload: data.val()
+        });
+      })
+      .catch(e => console.log(e));
+  }, []);
+
+  function isAuthorized(permission) {
+    if (state.profile && state.roles) {
+      const role = Object.values(state.roles).find(role => role.name === state.profile.role);
+      if (role) {
+        return role.permissions.includes(permission);
+      }
+      return false;
+    }
+    return false;
+  }
+
   return (
-    <AppContext.Provider value={{state, dispatch}}>
+    <AppContext.Provider value={{state, dispatch, isAuthorized}}>
       <Switch>
         <Route exact path={'/'}>
           <Login/>
         </Route>
-        <PrivateRoute isAuthorize={state.profile} exact path={'/employee'}>
+        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.employee)} exact path={'/employee'}>
           employee
+        </PrivateRoute>
+        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.roles)} exact path={'/roles'}>
+          <Roles/>
         </PrivateRoute>
         <PrivateRoute isAuthorize={state.profile} exact path={'/profile'}>
           <Profile/>
         </PrivateRoute>
-        <PrivateRoute isAuthorize={state.profile} exact path={'/scheduler'}>
+        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.scheduler)} exact path={'/scheduler'}>
           scheduler
         </PrivateRoute>
-        <PrivateRoute isAuthorize={state.profile} exact path={'/unit'}>
+        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.unit)} exact path={'/unit'}>
           unit
         </PrivateRoute>
       </Switch>

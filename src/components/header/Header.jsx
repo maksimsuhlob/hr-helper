@@ -3,6 +3,7 @@ import {AppBar, Button, Drawer, IconButton, makeStyles, Toolbar, Typography} fro
 import MenuIcon from '@material-ui/icons/Menu';
 import {AppContext} from '../../utils/appContext';
 import {NavLink} from 'react-router-dom';
+import {PermissionKeys} from '../../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,15 +35,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const routes = [
-  'unit',
-  'scheduler',
-  'roles',
-  'profile',
-  'employee',
+  {route: 'unit', permission: PermissionKeys.unit},
+  {route: 'scheduler', permission: PermissionKeys.scheduler},
+  {route: 'roles', permission: PermissionKeys.roles},
+  {route: 'profile', permission: 'common'},
+  {route: 'employee', permission: PermissionKeys.employee},
 ];
 export default function Header({title}) {
   const classes = useStyles();
-  const {dispatch} = useContext(AppContext);
+  const {dispatch, isAuthorized} = useContext(AppContext);
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
 
   function handleLogout() {
@@ -80,13 +81,16 @@ export default function Header({title}) {
         <nav>
           {
             routes.map((item, i) => {
-              return <div key={i} className={classes.linkWrapper}>
-                <NavLink
-                  to={`/${item}`}
-                  className={classes.link}
-                  activeClassName={classes.linkActive}
-                >{item}</NavLink>
-              </div>;
+              if (isAuthorized(item.permission) || item.permission === 'common') {
+                return <div key={i} className={classes.linkWrapper}>
+                  <NavLink
+                    to={`/${item.route}`}
+                    className={classes.link}
+                    activeClassName={classes.linkActive}
+                  >{item.route}</NavLink>
+                </div>;
+              }
+              return null;
             })
           }
         </nav>
