@@ -90,7 +90,7 @@ export default function Roles() {
   }
 
   function handleUpdateRole() {
-    firebase.database().ref(`/roles/${selectedRole.name}`).set(selectedRole)
+    firebase.database().ref(`/roles/${selectedRole.name}`).update(selectedRole)
       .catch(e => console.log(e));
   }
 
