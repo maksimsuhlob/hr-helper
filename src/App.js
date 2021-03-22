@@ -10,6 +10,7 @@ import {PermissionKeys} from './utils/constants';
 import Employee from './pages/emloyee/Employee';
 import User from './pages/user/User';
 import Positions from './pages/positions/Positions';
+import Unit from './pages/unit/Unit';
 
 const initialState = {
   profile: null,
@@ -105,7 +106,7 @@ function App() {
           scheduler
         </PrivateRoute>
         <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.unit)} exact path={'/unit'}>
-          unit
+          <Unit/>
         </PrivateRoute>
       </Switch>
     </AppContext.Provider>

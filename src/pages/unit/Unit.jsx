@@ -2,9 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   Button,
   Container,
-  FormControl,
-  InputLabel,
-  makeStyles, MenuItem, Select,
+  makeStyles,
   TextField
 } from '@material-ui/core';
 import './style.scss';
@@ -48,27 +46,21 @@ const Modes = {
   add: 'add',
   edit: 'edit',
 };
-const userInitialValue = {
+const unitInitialValue = {
   id: null,
   value: {
-    nickname: '',
-    password: '',
-    role: ''
+    name: '',
+    description: ''
   }
 };
-export default function User() {
+export default function Unit() {
   const classes = useStyles();
   const [mode, setMode] = useState(Modes.read);
-  const [roleList, setRoleList] = useState([]);
-  const [usersList, setUsersList] = useState([]);
-  const [userProfile, setUserProfile] = useState(userInitialValue);
+  const [unitsList, setUnitsList] = useState([]);
+  const [unit, setUnit] = useState(unitInitialValue);
   const [isActiveSave, setIsActiveSave] = useState(true);
   useEffect(() => {
-    firebase.database().ref(`/roles`)
-      .on('value', data => {
-        setRoleList(Object.values(data.val()));
-      });
-    firebase.database().ref(`/users`)
+    firebase.database().ref(`/units`)
       .on('value', data => {
         const users = [];
         const usersData = data.val();
@@ -78,24 +70,23 @@ export default function User() {
             value: usersData[key]
           });
         }
-        setUsersList(users);
+        setUnitsList(users);
       });
 
     return () => {
-      firebase.database().ref(`/roles`).off();
-      firebase.database().ref(`/users`).off();
+      firebase.database().ref(`/units`).off();
     };
   }, []);
 
-  function handleAddNewUser() {
+  function handleAddNewUnit() {
     setMode(Modes.add);
   }
 
-  function handleAddUser() {
-    firebase.database().ref('/users').push(userProfile.value)
+  function handleAddUnit() {
+    firebase.database().ref('/units').push(unit.value)
       .then(() => {
         setMode(Modes.read);
-        setUserProfile(userInitialValue);
+        setUnit(unitInitialValue);
         setIsActiveSave(true);
       })
       .catch((e) => console.log(e));
@@ -106,49 +97,49 @@ export default function User() {
       if (mode === Modes.edit) {
         setIsActiveSave(false);
       }
-      setUserProfile({...userProfile, value: {...userProfile.value, [type]: e.target.value}});
+      setUnit({...unit, value: {...unit.value, [type]: e.target.value}});
     };
   }
 
   function handleCancel() {
     setMode(Modes.read);
-    setUserProfile(userInitialValue);
+    setUnit(unitInitialValue);
     setIsActiveSave(true);
   }
 
-  function handleSelectUser(user) {
+  function handleSelectUnit(user) {
     return () => {
       setMode(Modes.edit);
-      setUserProfile(user);
+      setUnit(user);
     };
   }
 
-  function handleRemoveUser() {
-    firebase.database().ref(`/users/${userProfile.id}`).remove()
+  function handleRemoveUnit() {
+    firebase.database().ref(`/units/${unit.id}`).remove()
       .then(() => {
         setMode(Modes.read);
-        setUserProfile(userInitialValue);
+        setUnit(unitInitialValue);
         setIsActiveSave(true);
       });
   }
-  function handleUpdateUser() {
-    firebase.database().ref(`/users/${userProfile.id}`).update(userProfile.value)
+  function handleUpdateUnit() {
+    firebase.database().ref(`/units/${unit.id}`).update(unit.value)
       .then(() => {
         setMode(Modes.read);
-        setUserProfile(userInitialValue);
+        setUnit(unitInitialValue);
         setIsActiveSave(true);
       });
   }
 
   return <div className="roles">
-    <Header title={'User manager'}/>
+    <Header title={'Unit manager'}/>
     <Container className={classes.container} maxWidth={'lg'}>
       <Button
         color={'primary'}
         variant={'contained'}
-        onClick={handleAddNewUser}
+        onClick={handleAddNewUnit}
       >
-        New user
+        New unit
       </Button>
     </Container>
     {
@@ -156,46 +147,32 @@ export default function User() {
         ? <Container className={classes.container} maxWidth={'lg'}>
           <div className={classes.userList}>
             {
-              usersList.map((user) => {
-                return <div key={user.id} onClick={handleSelectUser(user)}>{user.value.nickname}</div>;
+              unitsList.map((position) => {
+                return <Button
+                  key={position.id}
+                  variant={'outlined'}
+                  onClick={handleSelectUnit(position)}
+                >
+                  {position.value.name}
+                </Button>;
               })
             }
           </div>
           <div className={classes.userForm}>
             {
-              userProfile.id && <>
+              unit.id && <>
                 <TextField
-                  value={userProfile.value.nickname}
-                  label={'User login'}
+                  value={unit.value.name}
+                  label={'Unit name'}
                   className={classes.input}
-                  onChange={handleChange('nickname')}
+                  onChange={handleChange('name')}
                 />
                 <TextField
-                  value={userProfile.value.password}
-                  label={'User password'}
+                  value={unit.value.description}
+                  label={'Description'}
                   className={classes.input}
-                  onChange={handleChange('password')}
+                  onChange={handleChange('description')}
                 />
-                {
-                  <FormControl
-                    variant="outlined"
-                    className={classes.input}
-                  >
-                    <InputLabel id="demo-simple-select-outlined-label">Role</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      value={userProfile.value.role}
-                      onChange={handleChange('role')}
-                      label="Role"
-                    >
-                      {
-                        roleList.map(role => {
-                          return <MenuItem value={role.name}>{role.name}</MenuItem>;
-                        })
-                      }
-                    </Select>
-                  </FormControl>
-                }
 
                 <div>
                   <Button
@@ -206,7 +183,7 @@ export default function User() {
                   </Button>
                   <Button
                     variant={'contained'}
-                    onClick={handleRemoveUser}
+                    onClick={handleRemoveUnit}
                     color={'secondary'}
                   >
                     Remove
@@ -214,10 +191,10 @@ export default function User() {
                   <Button
                     color={'primary'}
                     variant={'contained'}
-                    onClick={handleUpdateUser}
+                    onClick={handleUpdateUnit}
                     disabled={isActiveSave}
                   >
-                    Update user
+                    Update unit
                   </Button>
                 </div>
 
@@ -229,35 +206,17 @@ export default function User() {
         : <Container className={classes.container} maxWidth={'lg'}>
           <div className={classes.userForm}>
             <TextField
-              value={userProfile.value.nickname}
-              label={'User login'}
+              value={unit.value.name}
+              label={'Position'}
               className={classes.input}
-              onChange={handleChange('nickname')}
+              onChange={handleChange('name')}
             />
             <TextField
-              value={userProfile.value.password}
-              label={'User password'}
+              value={unit.value.description}
+              label={'Description'}
               className={classes.input}
-              onChange={handleChange('password')}
+              onChange={handleChange('description')}
             />
-            {
-              <FormControl variant="outlined">
-                <InputLabel id="demo-simple-select-outlined-label">Role</InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={userProfile.value.role}
-                  onChange={handleChange('role')}
-                  label="Role"
-                >
-                  {
-                    roleList.map(role => {
-                      return <MenuItem value={role.name}>{role.name}</MenuItem>;
-                    })
-                  }
-                </Select>
-              </FormControl>
-            }
 
             <Button
               variant={'contained'}
@@ -268,10 +227,10 @@ export default function User() {
             <Button
               color={'primary'}
               variant={'contained'}
-              onClick={handleAddUser}
+              onClick={handleAddUnit}
               disabled={mode === Modes.read}
             >
-              Add user
+              Add unit
             </Button>
           </div>
         </Container>

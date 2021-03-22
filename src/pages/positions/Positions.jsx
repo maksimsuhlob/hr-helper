@@ -13,16 +13,26 @@ import Header from '../../components/header/Header';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
-    padding: 30
+    padding: 30,
+    justifyContent: 'space-between'
   },
   userList: {
     width: '100%',
-    maxWidth: '30%'
+    maxWidth: '29%',
+    borderWidth: 1,
+    borderBlockColor: 'primary',
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 10
   },
   userForm: {
     display: 'flex',
     flexDirection: 'column',
-    flex: "1 1 auto"
+    flex: "1 1 auto",
+    maxWidth: '69%',
   },
   input: {
     marginBottom: 20
@@ -97,7 +107,7 @@ export default function Positions() {
     setIsActiveSave(true);
   }
 
-  function handleSelectUser(user) {
+  function handleSelectPosition(user) {
     return () => {
       setMode(Modes.edit);
       setPosition(user);
@@ -138,7 +148,7 @@ export default function Positions() {
           <div className={classes.userList}>
             {
               positionsList.map((position) => {
-                return <div key={position.id} onClick={handleSelectUser(position)}>{position.value.name}</div>;
+                return <div key={position.id} onClick={handleSelectPosition(position)}>{position.value.name}</div>;
               })
             }
           </div>
@@ -190,13 +200,13 @@ export default function Positions() {
         : <Container className={classes.container} maxWidth={'lg'}>
           <div className={classes.userForm}>
             <TextField
-              value={position.value.nickname}
+              value={position.value.name}
               label={'Position'}
               className={classes.input}
               onChange={handleChange('name')}
             />
             <TextField
-              value={position.value.password}
+              value={position.value.description}
               label={'Description'}
               className={classes.input}
               onChange={handleChange('description')}
@@ -214,7 +224,7 @@ export default function Positions() {
               onClick={handleAddPosition}
               disabled={mode === Modes.read}
             >
-              Add user
+              Add position
             </Button>
           </div>
         </Container>

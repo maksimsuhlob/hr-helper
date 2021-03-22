@@ -9,18 +9,33 @@ import {PermissionKeys} from '../../utils/constants';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
-    padding: 30
+    padding: 30,
+    justifyContent: 'space-between'
   },
-  rolesList: {
+  userList: {
     width: '100%',
-    maxWidth: '30%'
-  },
-  rolesForm: {
+    maxWidth: '29%',
+    borderWidth: 1,
+    borderBlockColor: 'primary',
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
     display: 'flex',
     flexDirection: 'column',
-    flex: "1 1 auto"
+    gap: 10
   },
-
+  userForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: "1 1 auto",
+    maxWidth: '69%',
+  },
+  input: {
+    marginBottom: 20
+  },
+  controls: {
+    display: 'flex'
+  }
 }));
 
 const Modes = {
@@ -133,14 +148,14 @@ export default function Roles() {
     {
       mode !== Modes.add
         ? <Container className={classes.container} maxWidth={'lg'}>
-          <div className={classes.rolesList}>
+          <div className={classes.userList}>
             {
               roleList.map((role, i) => {
                 return <div key={i} onClick={handleSelectRole(role)}>{role.name}</div>;
               })
             }
           </div>
-          <div className={classes.rolesForm}>
+          <div className={classes.userForm}>
             {
               selectedRole && <div>
                 <TextField
@@ -194,7 +209,7 @@ export default function Roles() {
 
         </Container>
         : <Container className={classes.container} maxWidth={'lg'}>
-          <div className={classes.rolesForm}>
+          <div className={classes.userForm}>
             <TextField
               value={newRole.name}
               label={'name'}
