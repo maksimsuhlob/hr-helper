@@ -22,14 +22,14 @@ export default function Login() {
   const {dispatch} = useContext(AppContext);
 
   function handleLogin() {
-    firebase.database().ref(`/users/${login}`).get()
+    firebase.database().ref(`/users`).orderByChild('nickname').equalTo(login).get()
       .then(data => {
-        const userData = data.val();
+        const userData = Object.values(data.val())[0];
         if (userData && userData.password === password) {
           dispatch({
             type: 'SET_PROFILE',
             payload: {...userData, nickname: login}
-          })
+          });
           history.push('/profile');
         }
       })

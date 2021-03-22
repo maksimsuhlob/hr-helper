@@ -5,4 +5,5 @@ export const PermissionKeys={
   roles: 'roles',
   scheduler: 'scheduler',
   unit: 'unit',
+  user: 'user',
 }

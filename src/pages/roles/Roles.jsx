@@ -37,9 +37,12 @@ export default function Roles() {
   const [mode, setMode] = useState(Modes.read);
   useEffect(() => {
     firebase.database().ref(`/roles`)
-      .on('value',data => {
+      .on('value', data => {
+        console.log(data.val());
+
         setRoleList(Object.values(data.val()));
-      })
+      });
+    return () => firebase.database().ref(`/roles`).off();
   }, []);
 
   function handleSelectRole(role) {

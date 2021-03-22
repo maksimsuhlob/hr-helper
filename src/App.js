@@ -7,6 +7,8 @@ import {useEffect, useReducer} from 'react';
 import Roles from './pages/roles/Roles';
 import firebase from 'firebase';
 import {PermissionKeys} from './utils/constants';
+import Employee from './pages/emloyee/Employee';
+import User from './pages/user/User';
 
 const initialState = {
   profile: null,
@@ -84,10 +86,13 @@ function App() {
           <Login/>
         </Route>
         <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.employee)} exact path={'/employee'}>
-          employee
+          <Employee/>
         </PrivateRoute>
         <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.roles)} exact path={'/roles'}>
           <Roles/>
+        </PrivateRoute>
+        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.user)} exact path={'/user'}>
+          <User/>
         </PrivateRoute>
         <PrivateRoute isAuthorize={state.profile} exact path={'/profile'}>
           <Profile/>

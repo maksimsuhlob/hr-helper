@@ -40,6 +40,7 @@ const routes = [
   {route: 'roles', permission: PermissionKeys.roles},
   {route: 'profile', permission: 'common'},
   {route: 'employee', permission: PermissionKeys.employee},
+  {route: 'user', permission: PermissionKeys.user},
 ];
 export default function Header({title}) {
   const classes = useStyles();
