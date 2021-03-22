@@ -9,6 +9,7 @@ import firebase from 'firebase';
 import {PermissionKeys} from './utils/constants';
 import Employee from './pages/emloyee/Employee';
 import User from './pages/user/User';
+import Positions from './pages/positions/Positions';
 
 const initialState = {
   profile: null,
@@ -96,6 +97,9 @@ function App() {
         </PrivateRoute>
         <PrivateRoute isAuthorize={state.profile} exact path={'/profile'}>
           <Profile/>
+        </PrivateRoute>
+        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.positions)} exact path={'/positions'}>
+          <Positions/>
         </PrivateRoute>
         <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.scheduler)} exact path={'/scheduler'}>
           scheduler

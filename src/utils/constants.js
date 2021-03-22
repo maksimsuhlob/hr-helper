@@ -6,4 +6,5 @@ export const PermissionKeys={
   scheduler: 'scheduler',
   unit: 'unit',
   user: 'user',
+  positions: 'positions',
 }

@@ -35,12 +35,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const routes = [
-  {route: 'unit', permission: PermissionKeys.unit},
-  {route: 'scheduler', permission: PermissionKeys.scheduler},
-  {route: 'roles', permission: PermissionKeys.roles},
+  ...Object.values(PermissionKeys).map(permission=>({route: permission, permission})),
   {route: 'profile', permission: 'common'},
-  {route: 'employee', permission: PermissionKeys.employee},
-  {route: 'user', permission: PermissionKeys.user},
 ];
 export default function Header({title}) {
   const classes = useStyles();
