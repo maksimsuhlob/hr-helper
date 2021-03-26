@@ -9,34 +9,8 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    display: 'flex',
-    padding: 30,
-    justifyContent: 'space-between'
-  },
-  userList: {
-    width: '100%',
-    maxWidth: '29%',
-    borderWidth: 1,
-    borderBlockColor: 'primary',
-    borderStyle: 'solid',
-    borderRadius: 5,
-    padding: 10,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 10
-  },
-  userForm: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: "1 1 auto",
-    maxWidth: '69%',
-  },
   input: {
     marginBottom: 20
-  },
-  controls: {
-    display: 'flex'
   }
 }));
 const userInitialValue = {

@@ -71,7 +71,7 @@ export default function ReferenceBookLayout(
   const classes = useStyles();
   const [mode, setMode] = useState(Modes.read);
   const [selectedData, setSelectedData] = useState(null);
-  const [isChangedModel, setIsChangedModel] = useState(true);
+  const [isChangedModel, setIsChangedModel] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
 
   function handleAddNewItem() {
@@ -91,6 +91,7 @@ export default function ReferenceBookLayout(
       setMode(Modes.edit);
       setIsInvalid(false);
       setSelectedData(item);
+      setIsChangedModel(false)
     };
   }
 
