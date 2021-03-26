@@ -47,9 +47,9 @@ export default function Roles() {
   return <Layout title={'Roles manager'}>
     <ReferenceBookLayout
       dataList={roleList}
-      addButtonText={'Add unit'}
-      newButtonText={'New unit'}
-      updateButtonText={'Update unit'}
+      addButtonText={'Add role'}
+      newButtonText={'New role'}
+      updateButtonText={'Update role'}
       validator={isValid}
       onAdd={handleAddRole}
       onUpdate={handleUpdateRole}
