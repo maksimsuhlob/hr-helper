@@ -1,27 +1,24 @@
 import React, {useContext, useState} from 'react';
 import {Button, Container, makeStyles, TextField,} from '@material-ui/core';
-import './style.scss';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import {AppContext} from '../../utils/appContext';
-import Header from '../../components/header/Header';
+import Layout from '../../components/layout/Layout';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginTop: 30
   },
   input: {
     marginBottom: '20px',
     fontSize: '36px'
-  },
-  pageTitle: {
-    fontSize: 24
   }
 }));
 export default function Profile() {
   const classes = useStyles();
-  const {state: {profile}} = useContext(AppContext);
+  const {state: {profile}, addAlert} = useContext(AppContext);
   const [password, setPassword] = useState(profile.password);
   const [isSavePassword, setIsSavePassword] = useState(false);
 
@@ -31,15 +28,19 @@ export default function Profile() {
   }
 
   function handleSavePassword() {
+    if (!password.length) {
+      addAlert('Incorrect password');
+      return;
+    }
     firebase.database().ref(`/users/${profile.nickname}`).set({...profile, password})
-      .then(data => {
-        console.log(data);
+      .then(() => {
+        setIsSavePassword(false);
+        addAlert('Password updated');
       })
       .catch(e => console.log(e));
   }
 
-  return <div className="profile">
-    <Header title={'Profile'}/>
+  return <Layout title={'Profile'}>
     <Container className={classes.container} maxWidth={'sm'}>
       <TextField
         value={profile.nickname}
@@ -69,5 +70,5 @@ export default function Profile() {
         Update Password
       </Button>
     </Container>
-  </div>;
+  </Layout>;
 }

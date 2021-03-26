@@ -3,7 +3,7 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 import Login from './pages/login/Login';
 import Profile from './pages/profile/Profile';
 import {AppContext} from './utils/appContext';
-import {useEffect, useReducer} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import Roles from './pages/roles/Roles';
 import firebase from 'firebase';
 import {PermissionKeys} from './utils/constants';
@@ -11,6 +11,7 @@ import Employee from './pages/emloyee/Employee';
 import User from './pages/user/User';
 import Positions from './pages/positions/Positions';
 import Unit from './pages/unit/Unit';
+import {Snackbar} from '@material-ui/core';
 
 const initialState = {
   profile: null,
@@ -59,6 +60,7 @@ function PrivateRoute({children, isAuthorize, ...rest}) {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState, init);
+  const [alert, setAlert] = useState(null);
   useEffect(() => {
     firebase.database().ref(`/roles`).get()
       .then(data => {
@@ -81,8 +83,22 @@ function App() {
     return false;
   }
 
+  function handleCloseAlert() {
+    setAlert(null);
+  }
+  function addAlert(message) {
+    setAlert(message);
+  }
+
   return (
-    <AppContext.Provider value={{state, dispatch, isAuthorized}}>
+    <AppContext.Provider value={{state, dispatch, isAuthorized, addAlert}}>
+      <Snackbar
+        open={Boolean(alert)}
+        autoHideDuration={6000}
+        message={alert}
+        onClose={handleCloseAlert}
+        anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+      />
       <Switch>
         <Route exact path={'/'}>
           <Login/>
