@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FormControl, IconButton, InputLabel, makeStyles, MenuItem, Select, TextField} from '@material-ui/core';
-import PlusIcon from '@material-ui/icons/Add';
-import OrganisationItem from '../../components/CommonOrganisationForm/OrganisationItem';
+import {FormControl, InputLabel, makeStyles, MenuItem, Select, TextField} from '@material-ui/core';
 import firebase from 'firebase';
 import {modifyData} from '../../utils/modifyData';
 import CommonOrganisationForm from '../../components/CommonOrganisationForm/CommonOrganisationForm';
@@ -43,11 +41,10 @@ const employeeInitialValue = {
     workExperience: []
   }
 };
-//todo add  work experience
+
 export default function EmployeeForm({model = employeeInitialValue, isInvalid, onChange}) {
   const classes = useStyles();
   const [employee, setEmployee] = useState(employeeInitialValue);
-  const [isAddInstitution, setIsAddInstitution] = useState(false);
   const [positionList, setPositionList] = useState([]);
   const [unitList, setUnitList] = useState([]);
   useEffect(() => {
@@ -101,8 +98,6 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
         };
         setEmployee(newEmployee);
         onChange && onChange(newEmployee);
-
-        setIsAddInstitution(false);
       } else {
         const newInstitutionList = employee.value.education.reduce((acc, item) => {
           if (item.id !== model.id) {
@@ -149,8 +144,6 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
         };
         setEmployee(newEmployee);
         onChange && onChange(newEmployee);
-
-        setIsAddInstitution(false);
       } else {
         const newWExpList = employee.value.education.reduce((acc, item) => {
           if (item.id !== model.id) {
