@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import firebase from 'firebase/app';
 import 'firebase/database';
+import {modifyData} from '../../utils/modifyData';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -28,15 +29,7 @@ export default function UserForm({model = userInitialValue, isInvalid, onChange}
   useEffect(() => {
     firebase.database().ref(`/roles`)
       .on('value', data => {
-        const roles = [];
-        const rolesData = data.val();
-        for (let key in data.val()) {
-          roles.push({
-            id: key,
-            value: rolesData[key]
-          });
-        }
-        setRoleList(roles);
+        setRoleList(modifyData(data));
       });
 
     return () => {

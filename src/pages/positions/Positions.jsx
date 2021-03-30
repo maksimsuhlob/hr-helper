@@ -4,6 +4,7 @@ import 'firebase/database';
 import Layout from '../../components/layout/Layout';
 import ReferenceBookLayout from '../../components/reference-book-layout/ReferenceBookLayout';
 import PositionForm from './PositionForm';
+import {modifyData} from '../../utils/modifyData';
 
 export default function Positions() {
   const [positionsList, setPositionsList] = useState([]);
@@ -11,15 +12,7 @@ export default function Positions() {
   useEffect(() => {
     firebase.database().ref(`/positions`)
       .on('value', data => {
-        const users = [];
-        const usersData = data.val();
-        for (let key in data.val()) {
-          users.push({
-            id: key,
-            value: usersData[key]
-          });
-        }
-        setPositionsList(users);
+        setPositionsList(modifyData(data));
       });
 
     return () => {

@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {IconButton, makeStyles, TextField} from '@material-ui/core';
+import {FormControl, IconButton, InputLabel, makeStyles, MenuItem, Select, TextField} from '@material-ui/core';
 import EducationForm from './EducationForm';
 import PlusIcon from '@material-ui/icons/Add';
 import EducationItem from './EducationItem';
+import firebase from 'firebase';
+import {modifyData} from '../../utils/modifyData';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -39,11 +41,27 @@ const employeeInitialValue = {
     workExperience: []
   }
 };
-//todo add position, unit, work experience
+//todo add  work experience
 export default function EmployeeForm({model = employeeInitialValue, isInvalid, onChange}) {
   const classes = useStyles();
   const [employee, setEmployee] = useState(employeeInitialValue);
   const [isAddInstitution, setIsAddInstitution] = useState(false);
+  const [positionList, setPositionList] = useState([]);
+  const [unitList, setUnitList] = useState([]);
+  useEffect(() => {
+    firebase.database().ref(`/positions`)
+      .on('value', data => {
+        setPositionList(modifyData(data));
+      });
+    firebase.database().ref(`/units`)
+      .on('value', data => {
+        setUnitList(modifyData(data));
+      });
+    return () => {
+      firebase.database().ref(`/positions`).off();
+      firebase.database().ref(`/units`).off();
+    };
+  }, []);
   useEffect(() => {
     setEmployee(model);
   }, [model]);
@@ -210,6 +228,44 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
       error={isInvalid}
       onChange={handleChange('passportAgency')}
     />
+    <FormControl
+      variant="outlined"
+      className={classes.input}
+    >
+      <InputLabel id="demo-simple-select-outlined-label">Position</InputLabel>
+      <Select
+        labelId="demo-simple-select-outlined-label"
+        value={employee.value.position || ''}
+        onChange={handleChange('position')}
+        label="Position"
+        error={isInvalid}
+      >
+        {
+          positionList.map(position => {
+            return <MenuItem key={position.id} value={position.id}>{position.value.name}</MenuItem>;
+          })
+        }
+      </Select>
+    </FormControl>
+    <FormControl
+      variant="outlined"
+      className={classes.input}
+    >
+      <InputLabel id="unit-label">Unit</InputLabel>
+      <Select
+        labelId="unit-label"
+        value={employee.value.unit || ''}
+        onChange={handleChange('unit')}
+        label="Unit"
+        error={isInvalid}
+      >
+        {
+          unitList.map(unit => {
+            return <MenuItem key={unit.id} value={unit.id}>{unit.value.name}</MenuItem>;
+          })
+        }
+      </Select>
+    </FormControl>
     <div>
       <div className={classes.educationHeader}>
         <p>Education</p>

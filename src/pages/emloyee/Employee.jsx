@@ -4,6 +4,7 @@ import 'firebase/database';
 import Layout from '../../components/layout/Layout';
 import ReferenceBookLayout from '../../components/reference-book-layout/ReferenceBookLayout';
 import EmployeeForm from './EmployeeForm';
+import {modifyData} from '../../utils/modifyData';
 
 export default function Positions() {
   const [employeesList, setEmployeesList] = useState([]);
@@ -11,15 +12,7 @@ export default function Positions() {
   useEffect(() => {
     firebase.database().ref(`/employees`)
       .on('value', data => {
-        const users = [];
-        const usersData = data.val();
-        for (let key in data.val()) {
-          users.push({
-            id: key,
-            value: usersData[key]
-          });
-        }
-        setEmployeesList(users);
+        setEmployeesList(modifyData(data));
       });
 
     return () => {

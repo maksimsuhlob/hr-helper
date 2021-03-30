@@ -4,6 +4,7 @@ import 'firebase/database';
 import Layout from '../../components/layout/Layout';
 import ReferenceBookLayout from '../../components/reference-book-layout/ReferenceBookLayout';
 import RolesForm from './RolesForm';
+import {modifyData} from '../../utils/modifyData';
 
 export default function Roles() {
   const [roleList, setRoleList] = useState([]);
@@ -11,15 +12,7 @@ export default function Roles() {
   useEffect(() => {
     firebase.database().ref(`/roles`)
       .on('value', data => {
-        const users = [];
-        const usersData = data.val();
-        for (let key in data.val()) {
-          users.push({
-            id: key,
-            value: usersData[key]
-          });
-        }
-        setRoleList(users);
+        setRoleList(modifyData(data));
       });
     return () => firebase.database().ref(`/roles`).off();
   }, []);

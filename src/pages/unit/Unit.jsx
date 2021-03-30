@@ -4,6 +4,7 @@ import 'firebase/database';
 import Layout from '../../components/layout/Layout';
 import ReferenceBookLayout from '../../components/reference-book-layout/ReferenceBookLayout';
 import UnitForm from './UnitForm';
+import {modifyData} from '../../utils/modifyData';
 
 export default function Unit() {
   const [unitsList, setUnitsList] = useState([]);
@@ -11,15 +12,7 @@ export default function Unit() {
   useEffect(() => {
     firebase.database().ref(`/units`)
       .on('value', data => {
-        const users = [];
-        const usersData = data.val();
-        for (let key in data.val()) {
-          users.push({
-            id: key,
-            value: usersData[key]
-          });
-        }
-        setUnitsList(users);
+        setUnitsList(modifyData(data));
       });
 
     return () => {

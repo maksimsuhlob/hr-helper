@@ -4,6 +4,7 @@ import 'firebase/database';
 import Layout from '../../components/layout/Layout';
 import UserForm from './UserForm';
 import ReferenceBookLayout from '../../components/reference-book-layout/ReferenceBookLayout';
+import {modifyData} from '../../utils/modifyData';
 
 export default function User() {
   const [usersList, setUsersList] = useState([]);
@@ -11,15 +12,7 @@ export default function User() {
   useEffect(() => {
     firebase.database().ref(`/users`)
       .on('value', data => {
-        const users = [];
-        const usersData = data.val();
-        for (let key in data.val()) {
-          users.push({
-            id: key,
-            value: usersData[key]
-          });
-        }
-        setUsersList(users);
+        setUsersList(modifyData(data));
       });
 
     return () => {
