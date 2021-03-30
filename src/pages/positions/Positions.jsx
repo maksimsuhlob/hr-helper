@@ -57,6 +57,7 @@ export default function Positions() {
       onUpdate={handleUpdatePosition}
       onRemove={handleRemovePosition}
       FormComponent={PositionForm}
+      sortParam={'name'}
     />
   </Layout>;
 };

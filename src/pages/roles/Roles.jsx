@@ -55,6 +55,7 @@ export default function Roles() {
       onUpdate={handleUpdateRole}
       onRemove={handleRemoveRole}
       FormComponent={RolesForm}
+      sortParam={'name'}
     />
   </Layout>;
 };

@@ -58,6 +58,7 @@ export default function Unit() {
       onUpdate={handleUpdateUnit}
       onRemove={handleRemoveUnit}
       FormComponent={UnitForm}
+      sortParam={'name'}
     />
   </Layout>;
 };

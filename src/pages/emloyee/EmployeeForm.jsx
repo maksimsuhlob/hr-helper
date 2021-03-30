@@ -39,7 +39,7 @@ const employeeInitialValue = {
     workExperience: []
   }
 };
-
+//todo add position, unit, work experience
 export default function EmployeeForm({model = employeeInitialValue, isInvalid, onChange}) {
   const classes = useStyles();
   const [employee, setEmployee] = useState(employeeInitialValue);

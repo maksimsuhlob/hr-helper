@@ -52,12 +52,13 @@ export default function Positions() {
       addButtonText={'Add employee'}
       newButtonText={'New employee'}
       updateButtonText={'Update employee'}
-      dataViewParam={'lastName'}
+      dataViewParam={['lastName', 'firstName']}
       validator={isValid}
       onAdd={handleAddEmployee}
       onUpdate={handleUpdateEmployee}
       onRemove={handleRemoveEmployee}
       FormComponent={EmployeeForm}
+      sortParam={'lastName'}
     />
   </Layout>;
 };

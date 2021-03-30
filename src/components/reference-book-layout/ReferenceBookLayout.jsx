@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Button,
   Container,
@@ -58,7 +58,7 @@ const Modes = {
 export default function ReferenceBookLayout(
   {
     dataList,
-    dataViewParam = 'name',
+    dataViewParam = ['name'],
     newButtonText,
     updateButtonText,
     onUpdate,
@@ -66,13 +66,24 @@ export default function ReferenceBookLayout(
     onAdd,
     onRemove,
     validator,
+    sortParam,
     FormComponent,
   }) {
   const classes = useStyles();
   const [mode, setMode] = useState(Modes.read);
+  const [data, setData] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
   const [isChangedModel, setIsChangedModel] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
+  useEffect(() => {
+    if (sortParam) {
+      setData(dataList.sort((a, b) => {
+        return a.value[sortParam].localeCompare(b.value[sortParam]);
+      }));
+    } else {
+      setData(dataList);
+    }
+  }, [dataList, sortParam]);
 
   function handleAddNewItem() {
     setMode(Modes.add);
@@ -91,7 +102,7 @@ export default function ReferenceBookLayout(
       setMode(Modes.edit);
       setIsInvalid(false);
       setSelectedData(item);
-      setIsChangedModel(false)
+      setIsChangedModel(false);
     };
   }
 
@@ -172,13 +183,13 @@ export default function ReferenceBookLayout(
     <Container className={classes.container} maxWidth={'lg'}>
       <div className={classes.dataList}>
         {
-          dataList.map((data) => {
+          data.map((data) => {
             return <div
               className={`${classes.dataItem} ${selectedData && selectedData.id === data.id && classes.dataItemSelected}`}
               key={data.id}
               onClick={handleSelectItem(data)}
             >
-              {data.value[dataViewParam]}
+              {dataViewParam.map(param=>data.value[param]).join(' ')}
             </div>;
           })
         }

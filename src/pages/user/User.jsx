@@ -58,12 +58,13 @@ export default function User() {
       addButtonText={'Add user'}
       newButtonText={'New User'}
       updateButtonText={'Update user'}
-      dataViewParam={'nickname'}
+      dataViewParam={['nickname']}
       validator={isValid}
       onAdd={handleAddUser}
       onUpdate={handleUpdateUser}
       onRemove={handleRemoveUser}
       FormComponent={UserForm}
+      sortParam={'nickname'}
     />
   </Layout>;
 }
