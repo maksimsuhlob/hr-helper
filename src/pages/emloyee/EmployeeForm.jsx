@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {FormControl, IconButton, InputLabel, makeStyles, MenuItem, Select, TextField} from '@material-ui/core';
-import EducationForm from './EducationForm';
 import PlusIcon from '@material-ui/icons/Add';
-import EducationItem from './EducationItem';
+import OrganisationItem from '../../components/CommonOrganisationForm/OrganisationItem';
 import firebase from 'firebase';
 import {modifyData} from '../../utils/modifyData';
+import CommonOrganisationForm from '../../components/CommonOrganisationForm/CommonOrganisationForm';
+import EducationForm from './EducationForm';
+import WorkExpForm from './WorkExpForm';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -74,10 +76,6 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
     };
   }
 
-  function handleAddInstitution() {
-    setIsAddInstitution(true);
-  }
-
   function handleRemoveInstitution(remInst) {
     const newInstitutionList = employee.value.education.filter(item => item.id !== remInst.id);
     onChange && onChange({
@@ -126,10 +124,55 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
       }
     };
   }
-
-  function handleCancelAddInstitution() {
-    setIsAddInstitution(false);
+  function handleRemoveWorkExp(wExp) {
+    const newWExpList = employee.value.education.filter(item => item.id !== wExp.id);
+    onChange && onChange({
+      ...employee,
+      value: {
+        ...employee.value,
+        workExperience: newWExpList
+      }
+    });
   }
+
+  function handleChangeWorkExp(isNew) {
+    return model => {
+      const wExp = employee.value.workExperience || [];
+      if (isNew) {
+        wExp.push(model);
+        const newEmployee = {
+          ...employee,
+          value: {
+            ...employee.value,
+            workExperience: wExp
+          }
+        };
+        setEmployee(newEmployee);
+        onChange && onChange(newEmployee);
+
+        setIsAddInstitution(false);
+      } else {
+        const newWExpList = employee.value.education.reduce((acc, item) => {
+          if (item.id !== model.id) {
+            acc.push(item);
+            return acc;
+          }
+          acc.push(model);
+          return acc;
+        }, []);
+        const newEmployee = {
+          ...employee,
+          value: {
+            ...employee.value,
+            workExperience: newWExpList
+          }
+        };
+        setEmployee(newEmployee);
+        onChange && onChange(newEmployee);
+      }
+    };
+  }
+
 
   return <div className={classes.userForm}>
     <TextField
@@ -266,34 +309,25 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
         }
       </Select>
     </FormControl>
-    <div>
-      <div className={classes.educationHeader}>
-        <p>Education</p>
-
-        <IconButton
-          aria-label="Add institution"
-          onClick={handleAddInstitution}
-        >
-          <PlusIcon/>
-        </IconButton>
-      </div>
-
-      {
-        isAddInstitution && <EducationForm
-          onChange={handleChangeInstitution(true)}
-          onCancel={handleCancelAddInstitution}
-        />
-      }
-      {
-        employee.value.education && employee.value.education.map((item) => {
-          return <EducationItem
-            key={item.id}
-            model={item}
-            onChange={handleChangeInstitution(false)}
-            onRemove={handleRemoveInstitution}
-          />;
-        })
-      }
-    </div>
+    <CommonOrganisationForm
+      title={'Education'}
+      onNewSave={handleChangeInstitution(true)}
+      onEditSave={handleChangeInstitution(false)}
+      onRemove={handleRemoveInstitution}
+      value={employee.value.education}
+      addLabel={"Add institution"}
+      FormComponent={EducationForm}
+      nameParams={['name', 'type']}
+    />
+    <CommonOrganisationForm
+      title={'Work experience'}
+      onNewSave={handleChangeWorkExp(true)}
+      onEditSave={handleChangeWorkExp(false)}
+      onRemove={handleRemoveWorkExp}
+      value={employee.value.workExperience}
+      addLabel={"Add Work place"}
+      FormComponent={WorkExpForm}
+      nameParams={['name', 'position']}
+    />
   </div>;
 }

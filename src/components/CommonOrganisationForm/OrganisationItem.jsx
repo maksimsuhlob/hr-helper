@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {IconButton, makeStyles} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import EducationForm from './EducationForm';
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -22,11 +21,13 @@ const useStyles = makeStyles((theme) => ({
 
   },
 }));
-export default function EducationItem(
+export default function OrganisationItem(
   {
     model,
     onChange,
-    onRemove
+    onRemove,
+    nameParams,
+    FormComponent
   }) {
   const classes = useStyles();
   const [isEdit, setIsEdit] = useState(false);
@@ -51,14 +52,14 @@ export default function EducationItem(
   return <div className={classes.item}>
     {
       isEdit
-        ? <EducationForm
+        ? <FormComponent
           model={model}
           onCancel={handleCancel}
           onChange={handleSave}
         />
         : <div className={classes.wrapper}>
           <div>
-            <p className={classes.title}>{model.name} {model.type}</p>
+            <p className={classes.title}>{nameParams.map(param=>model[param]).join(' ')}</p>
             <p className={classes.subtitle}>{model.enrollmentYear || ''} - {model.finishYear || 'Current time'}</p>
           </div>
           <div>
