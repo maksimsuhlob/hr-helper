@@ -203,6 +203,7 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
     <TextField
       value={employee.value.address}
       label={'Address'}
+      multiline
       error={isInvalid}
       className={classes.input}
       onChange={handleChange('address')}

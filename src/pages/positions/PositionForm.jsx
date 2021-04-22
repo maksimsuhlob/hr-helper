@@ -39,6 +39,7 @@ export default function PositionForm({model = positionInitialValue, isInvalid, o
     <TextField
       value={position.value.description}
       label={'Description'}
+      multiline
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('description')}

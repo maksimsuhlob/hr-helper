@@ -1,13 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import Layout from '../../components/layout/Layout';
 import UserForm from './UserForm';
 import ReferenceBookLayout from '../../components/reference-book-layout/ReferenceBookLayout';
 import {modifyData} from '../../utils/modifyData';
+import {AppContext} from '../../utils/appContext';
 
 export default function User() {
   const [usersList, setUsersList] = useState([]);
+  const {state: {profile}, addAlert} = useContext(AppContext);
 
   useEffect(() => {
     firebase.database().ref(`/users`)
@@ -26,12 +28,26 @@ export default function User() {
   }
 
   function handleAddUser(model) {
-    firebase.database().ref('/users').push(model.value)
-      .catch((e) => console.log(e));
+    firebase.database().ref(`/users`).orderByChild('nickname').equalTo(model.value.nickname).get()
+      .then((data) => {
+        if (data.val()) {
+          addAlert('user already exists ')
+          return;
+        }
+        firebase.database().ref('/users').push(model.value)
+          .catch((e) => console.log(e));
+      })
+      .catch(() => {
+        console.log('error');
+      });
   }
 
 
   function handleRemoveUser(model) {
+    if (model.value.nickname === profile.nickname) {
+      addAlert('You cannot delete this user');
+      return;
+    }
     firebase.database().ref(`/users/${model.id}`).remove()
       .catch((e) => {
         console.log(e);

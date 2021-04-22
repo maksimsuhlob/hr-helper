@@ -12,6 +12,7 @@ import User from './pages/user/User';
 import Positions from './pages/positions/Positions';
 import Unit from './pages/unit/Unit';
 import {Snackbar} from '@material-ui/core';
+import Scheduler from './pages/scheduler/Scheduler';
 
 const initialState = {
   profile: null,
@@ -119,7 +120,7 @@ function App() {
           <Positions/>
         </PrivateRoute>
         <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.scheduler)} exact path={'/scheduler'}>
-          scheduler
+          <Scheduler/>
         </PrivateRoute>
         <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.unit)} exact path={'/unit'}>
           <Unit/>

@@ -39,6 +39,7 @@ export default function UnitForm({model = unitInitialValue, isInvalid, onChange}
     <TextField
       value={unit.value.description}
       label={'Description'}
+      multiline
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('description')}
