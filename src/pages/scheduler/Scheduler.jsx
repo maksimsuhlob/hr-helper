@@ -144,6 +144,7 @@ export default function Scheduler() {
         .filter(employee => employee.value.unit === newSchedulerModel.value.unit)
         .map(employee => ({
           employeeId: employee.id,
+          fullName: getEmployeeName(employee.id),
           days: getDays(newSchedulerModel).map((day, i) => ({day: i + 1, value: null}))
         }));
 
@@ -316,7 +317,7 @@ export default function Scheduler() {
             {schedulerModel.value.employees.map((row) => (
               <TableRow key={row.employeeId}>
                 <TableCell component="th" scope="row" className={classes.tableCell}>
-                  {getEmployeeName(row.employeeId)}
+                  {row.fullName}
                 </TableCell>
                 {
                   row.days.map((day, i) => {
