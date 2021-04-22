@@ -90,7 +90,7 @@ const schedulerInitial = {
 };
 export default function Scheduler() {
   const classes = useStyles();
-  const {state: {profile}, addAlert} = useContext(AppContext);
+  const {addAlert} = useContext(AppContext);
   const [employeeList, setEmployeesList] = useState([]);
   const [unitList, setUnitsList] = useState([]);
   const [schedulerList, setSchedulerList] = useState([]);
@@ -211,7 +211,7 @@ export default function Scheduler() {
   async function handleSaveToPdf() {
     const doc = new jsPDF('l', 'mm', 'a4');
     const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
+    // const pageHeight = doc.internal.pageSize.getHeight();
 
     doc.text(`${monthList[schedulerModel.value.month]} ${schedulerModel.value.year}`, pageWidth / 2, 10);
     doc.autoTable({html: '#table', theme: 'grid', styles: {halign: 'center'}});
@@ -222,26 +222,6 @@ export default function Scheduler() {
     <Container className={classes.container} maxWidth={'lg'}>
       <div className={classes.controls}>
         <div className={classes.controlsGroup}>
-          <FormControl
-            variant="outlined"
-            className={classes.unit}
-          >
-            <InputLabel id="unit-label">Unit</InputLabel>
-            <Select
-              labelId="unit-label"
-              value={schedulerModel.value.unit}
-              onChange={handleChange('unit')}
-              label="Unit"
-              className={classes.select}
-              // error={isInvalid}
-            >
-              {
-                unitList.map(unit => {
-                  return <MenuItem key={unit.id} value={unit.id}>{unit.value.name}</MenuItem>;
-                })
-              }
-            </Select>
-          </FormControl>
           <TextField
             value={schedulerModel.value.year}
             label={'Year'}
@@ -265,6 +245,26 @@ export default function Scheduler() {
               {
                 monthList.map((month, i) => {
                   return <MenuItem key={i} value={i}>{month}</MenuItem>;
+                })
+              }
+            </Select>
+          </FormControl>
+          <FormControl
+            variant="outlined"
+            className={classes.unit}
+          >
+            <InputLabel id="unit-label">Unit</InputLabel>
+            <Select
+              labelId="unit-label"
+              value={schedulerModel.value.unit}
+              onChange={handleChange('unit')}
+              label="Unit"
+              className={classes.select}
+              // error={isInvalid}
+            >
+              {
+                unitList.map(unit => {
+                  return <MenuItem key={unit.id} value={unit.id}>{unit.value.name}</MenuItem>;
                 })
               }
             </Select>
