@@ -13,6 +13,7 @@ import Positions from './pages/positions/Positions';
 import Unit from './pages/unit/Unit';
 import {Snackbar} from '@material-ui/core';
 import Scheduler from './pages/scheduler/Scheduler';
+import StaffingTable from './pages/staffing-table/StaffingTable';
 
 const initialState = {
   profile: null,
@@ -124,6 +125,9 @@ function App() {
         </PrivateRoute>
         <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.unit)} exact path={'/unit'}>
           <Unit/>
+        </PrivateRoute>
+        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.unit)} exact path={'/staffingTable'}>
+          <StaffingTable/>
         </PrivateRoute>
       </Switch>
     </AppContext.Provider>

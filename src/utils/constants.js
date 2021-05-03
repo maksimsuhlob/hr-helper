@@ -7,4 +7,5 @@ export const PermissionKeys={
   unit: 'unit',
   user: 'user',
   positions: 'positions',
+  staffingTable: 'staffingTable',
 }

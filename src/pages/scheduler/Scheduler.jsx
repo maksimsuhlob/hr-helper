@@ -20,6 +20,7 @@ import Layout from '../../components/layout/Layout';
 import {modifyData} from '../../utils/modifyData';
 import {jsPDF} from "jspdf";
 import 'jspdf-autotable';
+import PTSans from '../../assets/PTSans-Regular.ttf';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -31,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between'
   },
-  controlsGroup:{
-    width:'48%'
+  controlsGroup: {
+    width: '48%'
   },
   input: {
     marginBottom: '20px',
@@ -45,10 +46,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     marginBottom: '20px',
   },
-  select:{
+  select: {
     width: '100%'
   },
-  button:{
+  button: {
     display: 'block',
     marginBottom: 20,
     width: '100%'
@@ -213,9 +214,11 @@ export default function Scheduler() {
     const doc = new jsPDF('l', 'mm', 'a4');
     const pageWidth = doc.internal.pageSize.getWidth();
     // const pageHeight = doc.internal.pageSize.getHeight();
-
+    doc.addFont(PTSans, "PTSans", "normal");
+    doc.setFont("PTSans"); // set font
+    doc.setFontSize(10);
     doc.text(`${monthList[schedulerModel.value.month]} ${schedulerModel.value.year}`, pageWidth / 2, 10);
-    doc.autoTable({html: '#table', theme: 'grid', styles: {halign: 'center'}});
+    doc.autoTable({html: '#table', theme: 'grid', styles: {halign: 'center', font: 'PTSans'}});
     doc.save("a4.pdf");
   }
 
