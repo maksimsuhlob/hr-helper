@@ -323,7 +323,7 @@ export default function StaffingTable() {
     firebase.database().ref('/staffingtables').push(staffingTableModel.value)
       .then(() => {
         setIsEditMode(false);
-        setStaffingTableModel(staffingTableInitial);
+        setStaffingTableModel(JSON.parse(JSON.stringify(staffingTableInitial)));
         addAlert('staffingTableModel saved');
       })
       .catch((e) => console.log(e));
@@ -333,7 +333,7 @@ export default function StaffingTable() {
     if (staffingTableModel.id) {
       firebase.database().ref(`/staffingtables/${staffingTableModel.id}`).remove()
         .then(() => {
-          setStaffingTableModel(staffingTableInitial);
+          setStaffingTableModel(JSON.parse(JSON.stringify(staffingTableInitial)));
         })
         .catch((e) => console.log(e));
       setIsEditMode(false);
