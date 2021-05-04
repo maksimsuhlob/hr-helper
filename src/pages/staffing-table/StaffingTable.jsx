@@ -73,6 +73,11 @@ const useStyles = makeStyles((theme) => ({
     margin: '10px 0',
     width: '100%'
   },
+  headerButton: {
+    display: 'block',
+    margin: '10px 20px 10px 10px',
+    maxWidth: '100px'
+  },
   tableCell: {
     borderRight: '1px solid #eee',
     textAlign: 'center',
@@ -86,7 +91,8 @@ const useStyles = makeStyles((theme) => ({
   },
   positionContainer: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   unitContainer: {
     display: 'flex',
@@ -408,7 +414,20 @@ export default function StaffingTable() {
                     key={i}
                     // className={classes.tableCell}
                   >
-                    {field}
+                    <div className={classes.unitContainer}>
+                      {
+                        isEditMode && field === staffingTableFields.unitName &&
+                        <Button
+                          color={'primary'}
+                          variant={'contained'}
+                          className={classes.headerButton}
+                          onClick={handleAddUnit}
+                        >
+                          add unit
+                        </Button>
+                      }
+                      {field}
+                    </div>
                   </TableCell>;
                 })
               }
@@ -441,13 +460,6 @@ export default function StaffingTable() {
                                         onClick={handleRemoveUnit(unitIdx)}
                                       >
                                         remove unit
-                                      </Button>
-                                      <Button
-                                        color={'primary'}
-                                        variant={'contained'}
-                                        onClick={handleAddPosition(unitIdx)}
-                                      >
-                                        add position
                                       </Button>
                                     </div>
                                   }
@@ -484,13 +496,24 @@ export default function StaffingTable() {
                                 {
                                   unitRowIdx === 1
                                   && isEditMode
-                                  && <Button
-                                    color={'secondary'}
-                                    variant={'contained'}
-                                    onClick={handleRemovePosition(unitIdx, positionIdx)}
-                                  >
-                                    remove position
-                                  </Button>
+                                  && <div className={classes.unitButtons}>
+                                    {
+                                      positionIdx === 0 && <Button
+                                        color={'primary'}
+                                        variant={'contained'}
+                                        onClick={handleAddPosition(unitIdx)}
+                                      >
+                                        add position
+                                      </Button>
+                                    }
+                                    <Button
+                                      color={'secondary'}
+                                      variant={'contained'}
+                                      onClick={handleRemovePosition(unitIdx, positionIdx)}
+                                    >
+                                      remove position
+                                    </Button>
+                                  </div>
                                 }
                                 {
                                   isEditMode
@@ -544,14 +567,6 @@ export default function StaffingTable() {
       </TableContainer>
       {
         isEditMode && <div className={classes.editModeControls}>
-          <Button
-            color={'primary'}
-            variant={'contained'}
-            className={classes.button}
-            onClick={handleAddUnit}
-          >
-            add unit
-          </Button>
           <Button
             color={'secondary'}
             variant={'contained'}
