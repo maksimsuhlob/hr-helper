@@ -46,11 +46,13 @@ export default function WorkExpForm(
   }
 
   function handleSave() {
-    setIsChangedModel(false);
-    onChange && onChange({
-      ...experience,
-      id: experience.id || Date.now()
-    });
+    if (experience.name) {
+      setIsChangedModel(false);
+      onChange && onChange({
+        ...experience,
+        id: experience.id || Date.now()
+      });
+    }
   }
 
   function handleCancel() {

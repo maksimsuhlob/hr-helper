@@ -33,7 +33,10 @@ export default function User() {
     firebase.database().ref(`/users`).orderByChild('nickname').equalTo(model.value.nickname).get()
       .then((data) => {
         if (data.val()) {
-          addAlert('user already exists ');
+          addAlert(intl.formatMessage({
+            id: 'user.notification',
+            defaultMessage: 'User already exists'
+          }));
           return;
         }
         firebase.database().ref('/users').push(model.value)
@@ -47,7 +50,11 @@ export default function User() {
 
   function handleRemoveUser(model) {
     if (model.value.nickname === profile.nickname) {
-      addAlert('You cannot delete this user');
+      addAlert(
+        intl.formatMessage({
+          id: 'user.notification.delete',
+          defaultMessage: 'You cannot delete this user'
+        }));
       return;
     }
     firebase.database().ref(`/users/${model.id}`).remove()

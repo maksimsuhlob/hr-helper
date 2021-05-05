@@ -325,7 +325,10 @@ export default function StaffingTable() {
       .then(() => {
         setIsEditMode(false);
         setStaffingTableModel(JSON.parse(JSON.stringify(staffingTableInitial)));
-        addAlert('staffingTableModel saved');
+        addAlert(intl.formatMessage({
+          id: 'staffingTable.notification',
+          defaultMessage: 'staffing Table saved'
+        }));
       })
       .catch((e) => console.log(e));
   }

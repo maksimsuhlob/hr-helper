@@ -198,7 +198,10 @@ export default function Scheduler() {
       return;
     }
     firebase.database().ref('/scheduler').push(schedulerModel.value)
-      .then(() => addAlert('scheduler saved'))
+      .then(() => addAlert(intl.formatMessage({
+        id: 'scheduler.notification',
+        defaultMessage: 'scheduler saved'
+      })))
       .catch((e) => console.log(e));
   }
 

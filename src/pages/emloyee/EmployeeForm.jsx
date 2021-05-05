@@ -64,7 +64,7 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
     };
   }, []);
   useEffect(() => {
-    setEmployee(model);
+    setEmployee(JSON.parse(JSON.stringify(model)));
   }, [model]);
 
   function handleChange(type) {
@@ -77,13 +77,15 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
 
   function handleRemoveInstitution(remInst) {
     const newInstitutionList = employee.value.education.filter(item => item.id !== remInst.id);
-    onChange && onChange({
+    const newEmployee ={
       ...employee,
       value: {
         ...employee.value,
-        education: newInstitutionList
+        education: [...newInstitutionList]
       }
-    });
+    };
+    setEmployee(newEmployee);
+    onChange && onChange(newEmployee);
   }
 
   function handleChangeInstitution(isNew) {
@@ -124,13 +126,15 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
 
   function handleRemoveWorkExp(wExp) {
     const newWExpList = employee.value.education.filter(item => item.id !== wExp.id);
-    onChange && onChange({
+    const newEmployee = {
       ...employee,
       value: {
         ...employee.value,
         workExperience: newWExpList
       }
-    });
+    };
+    setEmployee(newEmployee);
+    onChange && onChange(newEmployee);
   }
 
   function handleChangeWorkExp(isNew) {
@@ -168,7 +172,6 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
       }
     };
   }
-
 
   return <div className={classes.userForm}>
     <TextField

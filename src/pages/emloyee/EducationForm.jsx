@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
   },
   wrapper: {
     display: 'flex',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginBottom: 20
   },
@@ -46,11 +47,13 @@ export default function EducationForm(
   }
 
   function handleSave() {
-    setIsChangedModel(false);
-    onChange && onChange({
-      ...education,
-      id: education.id || Date.now()
-    });
+    if (education.name) {
+      setIsChangedModel(false);
+      onChange && onChange({
+        ...education,
+        id: education.id || Date.now()
+      });
+    }
   }
 
   function handleCancel() {

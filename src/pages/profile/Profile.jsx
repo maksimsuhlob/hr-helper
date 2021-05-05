@@ -31,13 +31,19 @@ export default function Profile() {
 
   function handleSavePassword() {
     if (!password.length) {
-      addAlert('Incorrect password');
+      addAlert(intl.formatMessage({
+        id: 'profile.notification.incorrect',
+        defaultMessage: 'Incorrect password'
+      }));
       return;
     }
     firebase.database().ref(`/users/${profile.nickname}`).set({...profile, password})
       .then(() => {
         setIsSavePassword(false);
-        addAlert('Password updated');
+        addAlert(intl.formatMessage({
+          id: 'profile.notification',
+          defaultMessage: 'Password updated'
+        }));
       })
       .catch(e => console.log(e));
   }

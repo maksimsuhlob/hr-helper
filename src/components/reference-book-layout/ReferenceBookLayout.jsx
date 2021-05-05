@@ -135,7 +135,7 @@ export default function ReferenceBookLayout(
   function handleChangeModel(model) {
     setIsChangedModel(true);
     setIsInvalid(false);
-    setSelectedData(model);
+    setSelectedData(JSON.parse(JSON.stringify(model)));
   }
 
   const renderNewButton = () => <Container className={classes.container} maxWidth={'lg'}>
@@ -194,7 +194,7 @@ export default function ReferenceBookLayout(
               key={data.id}
               onClick={handleSelectItem(data)}
             >
-              {dataViewParam.map(param=>data.value[param]).join(' ')}
+              {dataViewParam.map(param => data.value[param]).join(' ')}
             </div>;
           })
         }

@@ -84,6 +84,7 @@
   "scheduler.button.remove": "remove scheduler",
   "scheduler.button.saveToPdf": "save to pdf",
   "scheduler.table.employee": "Employee",
+  "scheduler.notification": "scheduler saved",
 
   "staffingTable.title": "Staffing Table",
   "staffingTable.tableList.label": "Staffing Table",
@@ -106,6 +107,7 @@
   "staffingTable.button.removePosition": "remove position",
   "staffingTable.form.unit.label": "Unit",
   "staffingTable.form.position.label": "Position",
+  "staffingTable.notification": "staffing Table saved",
 
   "unit.title": "Unit manager",
   "unit.addButtonText": "Add unit",
@@ -121,10 +123,14 @@
   "user.form.nickname": "User login",
   "user.form.password": "User password",
   "user.form.role": "Role",
+  "user.notification": "User already exists",
+  "user.notification.delete": "You cannot delete this user",
 
   "profile.title": "Profile",
   "profile.nickname": "Nickname",
   "profile.role": "Role",
   "profile.password": "Password",
-  "profile.upd-password": "Update Password"
+  "profile.upd-password": "Update Password",
+  "profile.notification": "Password updated",
+  "profile.notification.incorrect": "Incorrect password",
 }
