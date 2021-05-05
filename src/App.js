@@ -14,6 +14,9 @@ import Unit from './pages/unit/Unit';
 import {Snackbar} from '@material-ui/core';
 import Scheduler from './pages/scheduler/Scheduler';
 import StaffingTable from './pages/staffing-table/StaffingTable';
+import {IntlProvider} from 'react-intl';
+import EnTranslations from './en.json';
+import RuTranslations from './ru.json';
 
 const initialState = {
   profile: null,
@@ -88,49 +91,55 @@ function App() {
   function handleCloseAlert() {
     setAlert(null);
   }
+
   function addAlert(message) {
     setAlert(message);
   }
 
   return (
-    <AppContext.Provider value={{state, dispatch, isAuthorized, addAlert}}>
-      <Snackbar
-        open={Boolean(alert)}
-        autoHideDuration={6000}
-        message={alert}
-        onClose={handleCloseAlert}
-        anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-      />
-      <Switch>
-        <Route exact path={'/'}>
-          <Login/>
-        </Route>
-        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.employee)} exact path={'/employee'}>
-          <Employee/>
-        </PrivateRoute>
-        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.roles)} exact path={'/roles'}>
-          <Roles/>
-        </PrivateRoute>
-        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.user)} exact path={'/user'}>
-          <User/>
-        </PrivateRoute>
-        <PrivateRoute isAuthorize={state.profile} exact path={'/profile'}>
-          <Profile/>
-        </PrivateRoute>
-        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.positions)} exact path={'/positions'}>
-          <Positions/>
-        </PrivateRoute>
-        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.scheduler)} exact path={'/scheduler'}>
-          <Scheduler/>
-        </PrivateRoute>
-        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.unit)} exact path={'/unit'}>
-          <Unit/>
-        </PrivateRoute>
-        <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.unit)} exact path={'/staffingTable'}>
-          <StaffingTable/>
-        </PrivateRoute>
-      </Switch>
-    </AppContext.Provider>
+    <IntlProvider
+      messages={state.profile && state.profile.language==='ru'?RuTranslations:EnTranslations}
+      locale={state.profile && state.profile.language}
+      defaultLocale="en">
+      <AppContext.Provider value={{state, dispatch, isAuthorized, addAlert}}>
+        <Snackbar
+          open={Boolean(alert)}
+          autoHideDuration={6000}
+          message={alert}
+          onClose={handleCloseAlert}
+          anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+        />
+        <Switch>
+          <Route exact path={'/'}>
+            <Login/>
+          </Route>
+          <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.employee)} exact path={'/employee'}>
+            <Employee/>
+          </PrivateRoute>
+          <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.roles)} exact path={'/roles'}>
+            <Roles/>
+          </PrivateRoute>
+          <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.user)} exact path={'/user'}>
+            <User/>
+          </PrivateRoute>
+          <PrivateRoute isAuthorize={state.profile} exact path={'/profile'}>
+            <Profile/>
+          </PrivateRoute>
+          <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.positions)} exact path={'/positions'}>
+            <Positions/>
+          </PrivateRoute>
+          <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.scheduler)} exact path={'/scheduler'}>
+            <Scheduler/>
+          </PrivateRoute>
+          <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.unit)} exact path={'/unit'}>
+            <Unit/>
+          </PrivateRoute>
+          <PrivateRoute isAuthorize={isAuthorized(PermissionKeys.unit)} exact path={'/staffingTable'}>
+            <StaffingTable/>
+          </PrivateRoute>
+        </Switch>
+      </AppContext.Provider>
+    </IntlProvider>
   );
 }
 

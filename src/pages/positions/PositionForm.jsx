@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles, TextField} from '@material-ui/core';
+import {useIntl} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -16,6 +17,7 @@ const positionInitialValue = {
 export default function PositionForm({model = positionInitialValue, isInvalid, onChange}) {
   const classes = useStyles();
   const [position, setPosition] = useState(positionInitialValue);
+  const intl = useIntl();
   useEffect(() => {
     setPosition(model);
   }, [model]);
@@ -31,14 +33,20 @@ export default function PositionForm({model = positionInitialValue, isInvalid, o
   return <>
     <TextField
       value={position.value.name}
-      label={'Position name'}
+      label={intl.formatMessage({
+        id: 'position.form.name',
+        defaultMessage: 'Position name'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('name')}
     />
     <TextField
       value={position.value.description}
-      label={'Description'}
+      label={intl.formatMessage({
+        id: 'position.form.description',
+        defaultMessage: 'Description'
+      })}
       multiline
       className={classes.input}
       error={isInvalid}

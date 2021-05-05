@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Checkbox, FormControlLabel, makeStyles, TextField} from '@material-ui/core';
 import {PermissionKeys} from '../../utils/constants';
+import {useIntl} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -17,6 +18,7 @@ const unitInitialValue = {
 export default function RolesForm({model = unitInitialValue, isInvalid, onChange}) {
   const classes = useStyles();
   const [role, setRole] = useState(unitInitialValue);
+  const intl = useIntl();
   useEffect(() => {
     setRole(model);
   }, [model]);
@@ -45,7 +47,10 @@ export default function RolesForm({model = unitInitialValue, isInvalid, onChange
   return <>
     <TextField
       value={role.value.name}
-      label={'name'}
+      label={intl.formatMessage({
+        id: 'roles.form.name',
+        defaultMessage: 'Role name'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChangeNewRoleName}
@@ -63,7 +68,10 @@ export default function RolesForm({model = unitInitialValue, isInvalid, onChange
                   color="primary"
                 />
               }
-              label={permission}
+              label={intl.formatMessage({
+                id: `roles.form.permission.${permission}`,
+                defaultMessage: permission
+              })}
             />
           </div>;
         })

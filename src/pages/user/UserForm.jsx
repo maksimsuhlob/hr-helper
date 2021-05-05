@@ -8,6 +8,7 @@ import {
 import firebase from 'firebase/app';
 import 'firebase/database';
 import {modifyData} from '../../utils/modifyData';
+import {useIntl} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -26,6 +27,7 @@ export default function UserForm({model = userInitialValue, isInvalid, onChange}
   const classes = useStyles();
   const [roleList, setRoleList] = useState([]);
   const [userProfile, setUserProfile] = useState(userInitialValue);
+  const intl = useIntl();
   useEffect(() => {
     firebase.database().ref(`/roles`)
       .on('value', data => {
@@ -51,14 +53,20 @@ export default function UserForm({model = userInitialValue, isInvalid, onChange}
   return <>
     <TextField
       value={userProfile.value.nickname}
-      label={'User login'}
+      label={intl.formatMessage({
+        id: 'user.form.nickname',
+        defaultMessage: 'User login'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('nickname')}
     />
     <TextField
       value={userProfile.value.password}
-      label={'User password'}
+      label={intl.formatMessage({
+        id: 'user.form.password',
+        defaultMessage: 'User password'
+      })}
       error={isInvalid}
       className={classes.input}
       onChange={handleChange('password')}
@@ -68,12 +76,20 @@ export default function UserForm({model = userInitialValue, isInvalid, onChange}
         variant="outlined"
         className={classes.input}
       >
-        <InputLabel id="demo-simple-select-outlined-label">Role</InputLabel>
+        <InputLabel id="demo-simple-select-outlined-label">
+          {intl.formatMessage({
+            id: 'user.form.role',
+            defaultMessage: 'Role'
+          })}
+        </InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
           value={userProfile.value.role}
           onChange={handleChange('role')}
-          label="Role"
+          label={intl.formatMessage({
+            id: 'user.form.role',
+            defaultMessage: 'Role'
+          })}
           error={isInvalid}
         >
           {

@@ -5,9 +5,11 @@ import Layout from '../../components/layout/Layout';
 import ReferenceBookLayout from '../../components/reference-book-layout/ReferenceBookLayout';
 import PositionForm from './PositionForm';
 import {modifyData} from '../../utils/modifyData';
+import {useIntl} from 'react-intl';
 
 export default function Positions() {
   const [positionsList, setPositionsList] = useState([]);
+  const intl = useIntl();
 
   useEffect(() => {
     firebase.database().ref(`/positions`)
@@ -39,12 +41,24 @@ export default function Positions() {
     return Object.values(model.value).reduce((result, item) => result && Boolean(item), true);
   }
 
-  return <Layout title={'Position manager'}>
+  return <Layout title={intl.formatMessage({
+          id: 'position.title',
+          defaultMessage: 'Position manager'
+        })}>
     <ReferenceBookLayout
       dataList={positionsList}
-      addButtonText={'Add role'}
-      newButtonText={'New role'}
-      updateButtonText={'Update role'}
+      addButtonText={intl.formatMessage({
+          id: 'position.addButtonText',
+          defaultMessage: 'Add position'
+        })}
+      newButtonText={intl.formatMessage({
+          id: 'position.newButtonText',
+          defaultMessage: 'New position'
+        })}
+      updateButtonText={intl.formatMessage({
+          id: 'position.updateButtonText',
+          defaultMessage: 'Update position'
+        })}
       validator={isValid}
       onAdd={handleAddPosition}
       onUpdate={handleUpdatePosition}

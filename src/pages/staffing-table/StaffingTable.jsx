@@ -21,6 +21,7 @@ import {modifyData} from '../../utils/modifyData';
 import {jsPDF} from "jspdf";
 import 'jspdf-autotable';
 import PTSans from '../../assets/PTSans-Regular.ttf';
+import {useIntl} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -137,7 +138,6 @@ const staffingTableInitial = {
 };
 const staffingTableFields = {
   unitName: 'unit',
-  // unitId: 'unitId',
   positionName: 'position',
   number: 'number of employees',
   salary: 'salary',
@@ -149,6 +149,7 @@ const staffingTableFields = {
 };
 export default function StaffingTable() {
   const classes = useStyles();
+  const intl = useIntl();
   const {addAlert} = useContext(AppContext);
   const [positionsList, setPositionsList] = useState([]);
   const [unitList, setUnitsList] = useState([]);
@@ -340,7 +341,10 @@ export default function StaffingTable() {
     }
   }
 
-  return <Layout title={'Staffing Table'}>
+  return <Layout title={intl.formatMessage({
+    id: 'staffingTable.title',
+    defaultMessage: 'Staffing Table'
+  })}>
     <Container className={classes.container} maxWidth={'lg'}>
       <div className={classes.controls}>
         {
@@ -348,7 +352,10 @@ export default function StaffingTable() {
             ? <input
               type="text"
               className={classes.inputField}
-              placeholder={'table name'}
+              placeholder={intl.formatMessage({
+                id: 'staffingTable.form.name',
+                defaultMessage: 'table name'
+              })}
               value={staffingTableModel.value.name}
               onChange={handleChange('tableName')}
             />
@@ -356,15 +363,22 @@ export default function StaffingTable() {
               variant="outlined"
               className={classes.unit}
             >
-              <InputLabel id="unit-label">Staffing Table</InputLabel>
+              <InputLabel id="unit-label">
+                {intl.formatMessage({
+                  id: 'staffingTable.tableList.label',
+                  defaultMessage: 'Staffing Table'
+                })}
+              </InputLabel>
               <Select
                 labelId="unit-label"
                 value={staffingTableModel.id}
                 onChange={handleSelectStaffingTable}
-                label="Staffing Table"
+                label={intl.formatMessage({
+                  id: 'staffingTable.tableList.label',
+                  defaultMessage: 'Staffing Table'
+                })}
                 className={classes.select}
                 disabled={isEditMode}
-                // error={isInvalid}
               >
                 {
                   staffingTableList.map(unit => {
@@ -382,7 +396,10 @@ export default function StaffingTable() {
             onClick={createNewTable}
             disabled={isEditMode}
           >
-            new table
+            {intl.formatMessage({
+                id: 'staffingTable.button.new',
+                defaultMessage: 'new table'
+              })}
           </Button>
           <Button
             color={'secondary'}
@@ -391,7 +408,10 @@ export default function StaffingTable() {
             onClick={removeTable}
             disabled={!staffingTableModel.id}
           >
-            remove table
+            {intl.formatMessage({
+                id: 'staffingTable.button.remove',
+                defaultMessage: 'remove table'
+              })}
           </Button>
           <Button
             color={'inherit'}
@@ -400,7 +420,10 @@ export default function StaffingTable() {
             onClick={handleSaveToPdf}
             disabled={isEditMode}
           >
-            save to pdf
+            {intl.formatMessage({
+              id: 'staffingTable.button.saveToPdf',
+              defaultMessage: 'save to pdf'
+            })}
           </Button>
         </div>
       </div>
@@ -409,24 +432,27 @@ export default function StaffingTable() {
           <TableHead>
             <TableRow>
               {
-                Object.values(staffingTableFields).map((field, i) => {
-                  return <TableCell
-                    key={i}
-                    // className={classes.tableCell}
-                  >
+                Object.keys(staffingTableFields).map((field, i) => {
+                  return <TableCell key={i}>
                     <div className={classes.unitContainer}>
                       {
-                        isEditMode && field === staffingTableFields.unitName &&
+                        isEditMode && field === 'unitName' &&
                         <Button
                           color={'primary'}
                           variant={'contained'}
                           className={classes.headerButton}
                           onClick={handleAddUnit}
                         >
-                          add unit
+                          {intl.formatMessage({
+                            id: 'staffingTable.button.addUnit',
+                            defaultMessage: 'add unit'
+                          })}
                         </Button>
                       }
-                      {field}
+                      {intl.formatMessage({
+                        id: `staffingTable.table.head.${field}`,
+                        defaultMessage: staffingTableFields[field]
+                      })}
                     </div>
                   </TableCell>;
                 })
@@ -445,7 +471,6 @@ export default function StaffingTable() {
                             return <TableCell
                               key={unitRowIdx}
                               scope={'row'}
-                              // className={classes.tableCell}
                             >
                               {
                                 unitRowIdx === 0 && positionIdx === 0
@@ -459,7 +484,10 @@ export default function StaffingTable() {
                                         variant={'contained'}
                                         onClick={handleRemoveUnit(unitIdx)}
                                       >
-                                        remove unit
+                                        {intl.formatMessage({
+                                          id: 'staffingTable.button.removeUnit',
+                                          defaultMessage: 'remove unit'
+                                        })}
                                       </Button>
                                     </div>
                                   }
@@ -470,14 +498,21 @@ export default function StaffingTable() {
                                           variant="outlined"
                                           className={classes.selectUnit}
                                         >
-                                          <InputLabel id="unit-label">Unit</InputLabel>
+                                          <InputLabel id="unit-label">
+                                            {intl.formatMessage({
+                                              id: 'staffingTable.form.unit.label',
+                                              defaultMessage: 'Unit'
+                                            })}
+                                          </InputLabel>
                                           <Select
                                             labelId="unit-label"
                                             value={staffingTableModel.value.rows[unitIdx].unit}
                                             onChange={handleChange('unit', unitIdx)}
-                                            label="Unit"
+                                            label={intl.formatMessage({
+                                              id: 'staffingTable.form.unit.label',
+                                              defaultMessage: 'Unit'
+                                            })}
                                             className={classes.select}
-                                            // error={isInvalid}
                                           >
                                             {
                                               unitList.map(unit => {
@@ -503,7 +538,10 @@ export default function StaffingTable() {
                                         variant={'contained'}
                                         onClick={handleAddPosition(unitIdx)}
                                       >
-                                        add position
+                                        {intl.formatMessage({
+                                          id: 'staffingTable.button.addPosition',
+                                          defaultMessage: 'add position'
+                                        })}
                                       </Button>
                                     }
                                     <Button
@@ -511,7 +549,10 @@ export default function StaffingTable() {
                                       variant={'contained'}
                                       onClick={handleRemovePosition(unitIdx, positionIdx)}
                                     >
-                                      remove position
+                                      {intl.formatMessage({
+                                        id: 'staffingTable.button.removePosition',
+                                        defaultMessage: 'remove position'
+                                      })}
                                     </Button>
                                   </div>
                                 }
@@ -525,14 +566,21 @@ export default function StaffingTable() {
                                             variant="outlined"
                                             className={classes.selectPosition}
                                           >
-                                            <InputLabel id="unit-label">Position</InputLabel>
+                                            <InputLabel id="unit-label">
+                                              {intl.formatMessage({
+                                                id: 'staffingTable.form.position.label',
+                                                defaultMessage: 'Position'
+                                              })}
+                                            </InputLabel>
                                             <Select
                                               labelId="unit-label"
                                               value={staffingTableModel.value.rows[unitIdx].position[positionIdx].positionId}
                                               onChange={handleChange('positionName', unitIdx, positionIdx)}
-                                              label="Position"
+                                              label={intl.formatMessage({
+                                                id: 'staffingTable.form.position.label',
+                                                defaultMessage: 'Position'
+                                              })}
                                               className={classes.select}
-                                              // error={isInvalid}
                                             >
                                               {
                                                 positionsList.map(position => {
@@ -574,7 +622,10 @@ export default function StaffingTable() {
             onClick={handleSave}
             disabled={!staffingTableModel.value.name}
           >
-            save
+            {intl.formatMessage({
+              id: 'common.button.save',
+              defaultMessage: 'Save'
+            })}
           </Button>
           <Button
             color={'inherit'}
@@ -582,7 +633,10 @@ export default function StaffingTable() {
             className={classes.button}
             onClick={handleEditModeCancelClick}
           >
-            cancel
+            {intl.formatMessage({
+              id: 'common.button.cancel',
+              defaultMessage: 'Cancel'
+            })}
           </Button>
         </div>
       }
@@ -595,7 +649,10 @@ export default function StaffingTable() {
           className={classes.button}
           onClick={handleEditModeClick}
         >
-          edit
+          {intl.formatMessage({
+            id: 'common.button.edit',
+            defaultMessage: 'Edit'
+          })}
         </Button>
       }
     </Container>

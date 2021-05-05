@@ -5,6 +5,7 @@ import {modifyData} from '../../utils/modifyData';
 import CommonOrganisationForm from '../../components/CommonOrganisationForm/CommonOrganisationForm';
 import EducationForm from './EducationForm';
 import WorkExpForm from './WorkExpForm';
+import {useIntl} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -44,6 +45,7 @@ const employeeInitialValue = {
 
 export default function EmployeeForm({model = employeeInitialValue, isInvalid, onChange}) {
   const classes = useStyles();
+  const intl = useIntl();
   const [employee, setEmployee] = useState(employeeInitialValue);
   const [positionList, setPositionList] = useState([]);
   const [unitList, setUnitList] = useState([]);
@@ -119,6 +121,7 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
       }
     };
   }
+
   function handleRemoveWorkExp(wExp) {
     const newWExpList = employee.value.education.filter(item => item.id !== wExp.id);
     onChange && onChange({
@@ -170,27 +173,39 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
   return <div className={classes.userForm}>
     <TextField
       value={employee.value.firstName}
-      label={'First name'}
+      label={intl.formatMessage({
+        id: 'employee.form.firstName',
+        defaultMessage: 'First name'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('firstName')}
     />
     <TextField
       value={employee.value.lastName}
-      label={'Last name'}
+      label={intl.formatMessage({
+        id: 'employee.form.lastName',
+        defaultMessage: 'Last name'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('lastName')}
     />
     <TextField
       value={employee.value.patronymicName}
-      label={'Patronymic name'}
+      label={intl.formatMessage({
+        id: 'employee.form.patronymicName',
+        defaultMessage: 'Patronymic name'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('patronymicName')}
     />
     <TextField
-      label="Birthday"
+      label={intl.formatMessage({
+        id: 'employee.form.birthDate',
+        defaultMessage: 'Birthday'
+      })}
       type="date"
       error={isInvalid}
       className={classes.input}
@@ -202,7 +217,10 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
     />
     <TextField
       value={employee.value.address}
-      label={'Address'}
+      label={intl.formatMessage({
+        id: 'employee.form.address',
+        defaultMessage: 'Address'
+      })}
       multiline
       error={isInvalid}
       className={classes.input}
@@ -210,34 +228,49 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
     />
     <TextField
       value={employee.value.homePhone}
-      label={'Home phone'}
+      label={intl.formatMessage({
+        id: 'employee.form.homePhone',
+        defaultMessage: 'Home phone'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('homePhone')}
     />
     <TextField
       value={employee.value.mobilePhone}
-      label={'Mobile phone'}
+      label={intl.formatMessage({
+        id: 'employee.form.mobilePhone',
+        defaultMessage: 'Mobile phone'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('mobilePhone')}
     />
     <TextField
       value={employee.value.personalId}
-      label={'Personal ID'}
+      label={intl.formatMessage({
+        id: 'employee.form.personalId',
+        defaultMessage: 'Personal ID'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('personalId')}
     />
     <TextField
       value={employee.value.passportNumber}
-      label={'Passport number'}
+      label={intl.formatMessage({
+        id: 'employee.form.passportNumber',
+        defaultMessage: 'Passport number'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('passportNumber')}
     />
     <TextField
-      label="Passport date"
+      label={intl.formatMessage({
+        id: 'employee.form.passportDate',
+        defaultMessage: 'Passport date'
+      })}
       type="date"
       className={classes.input}
       error={isInvalid}
@@ -248,7 +281,10 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
       }}
     />
     <TextField
-      label="Passport expiration date"
+      label={intl.formatMessage({
+        id: 'employee.form.passportExpirationDate',
+        defaultMessage: 'Passport expiration date'
+      })}
       type="date"
       className={classes.input}
       error={isInvalid}
@@ -260,7 +296,10 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
     />
     <TextField
       value={employee.value.passportAgency}
-      label={'Passport agency'}
+      label={intl.formatMessage({
+        id: 'employee.form.passportAgency',
+        defaultMessage: 'Passport agency'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('passportAgency')}
@@ -269,12 +308,20 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
       variant="outlined"
       className={classes.input}
     >
-      <InputLabel id="demo-simple-select-outlined-label">Position</InputLabel>
+      <InputLabel id="demo-simple-select-outlined-label">
+        {intl.formatMessage({
+          id: 'employee.form.position',
+          defaultMessage: 'Position'
+        })}
+      </InputLabel>
       <Select
         labelId="demo-simple-select-outlined-label"
         value={employee.value.position || ''}
         onChange={handleChange('position')}
-        label="Position"
+        label={intl.formatMessage({
+          id: 'employee.form.position',
+          defaultMessage: 'Position'
+        })}
         error={isInvalid}
       >
         {
@@ -288,12 +335,20 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
       variant="outlined"
       className={classes.input}
     >
-      <InputLabel id="unit-label">Unit</InputLabel>
+      <InputLabel id="unit-label">
+        {intl.formatMessage({
+          id: 'employee.form.unit',
+          defaultMessage: 'Unit'
+        })}
+      </InputLabel>
       <Select
         labelId="unit-label"
         value={employee.value.unit || ''}
         onChange={handleChange('unit')}
-        label="Unit"
+        label={intl.formatMessage({
+          id: 'employee.form.unit',
+          defaultMessage: 'Unit'
+        })}
         error={isInvalid}
       >
         {
@@ -304,22 +359,34 @@ export default function EmployeeForm({model = employeeInitialValue, isInvalid, o
       </Select>
     </FormControl>
     <CommonOrganisationForm
-      title={'Education'}
+      title={intl.formatMessage({
+        id: 'employee.form.education',
+        defaultMessage: 'Education'
+      })}
       onNewSave={handleChangeInstitution(true)}
       onEditSave={handleChangeInstitution(false)}
       onRemove={handleRemoveInstitution}
       value={employee.value.education}
-      addLabel={"Add institution"}
+      addLabel={intl.formatMessage({
+        id: 'employee.form.education.add',
+        defaultMessage: 'Add institution'
+      })}
       FormComponent={EducationForm}
       nameParams={['name', 'type']}
     />
     <CommonOrganisationForm
-      title={'Work experience'}
+      title={intl.formatMessage({
+        id: 'employee.form.workExperience',
+        defaultMessage: 'Work experience'
+      })}
       onNewSave={handleChangeWorkExp(true)}
       onEditSave={handleChangeWorkExp(false)}
       onRemove={handleRemoveWorkExp}
       value={employee.value.workExperience}
-      addLabel={"Add Work place"}
+      addLabel={intl.formatMessage({
+        id: 'employee.form.workExperience.add',
+        defaultMessage: 'Add Work place'
+      })}
       FormComponent={WorkExpForm}
       nameParams={['name', 'position']}
     />

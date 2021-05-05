@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles, TextField} from '@material-ui/core';
+import {useIntl} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -16,6 +17,7 @@ const unitInitialValue = {
 export default function UnitForm({model = unitInitialValue, isInvalid, onChange}) {
   const classes = useStyles();
   const [unit, setUnit] = useState(unitInitialValue);
+  const intl = useIntl();
   useEffect(() => {
     setUnit(model);
   }, [model]);
@@ -31,14 +33,20 @@ export default function UnitForm({model = unitInitialValue, isInvalid, onChange}
   return <>
     <TextField
       value={unit.value.name}
-      label={'Unit name'}
+      label={intl.formatMessage({
+        id: 'unit.form.name',
+        defaultMessage: 'Unit name'
+      })}
       className={classes.input}
       error={isInvalid}
       onChange={handleChange('name')}
     />
     <TextField
       value={unit.value.description}
-      label={'Description'}
+      label={intl.formatMessage({
+        id: 'unit.form.description',
+        defaultMessage: 'Description'
+      })}
       multiline
       className={classes.input}
       error={isInvalid}

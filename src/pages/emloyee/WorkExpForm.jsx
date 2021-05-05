@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, makeStyles, TextField} from '@material-ui/core';
+import {useIntl} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -29,6 +30,7 @@ export default function WorkExpForm(
     onCancel
   }) {
   const classes = useStyles();
+  const intl = useIntl();
   const [experience, setExperience] = useState(workExpInitialValue);
   const [isChangedModel, setIsChangedModel] = useState(false);
   useEffect(() => {
@@ -60,14 +62,20 @@ export default function WorkExpForm(
     <div className={classes.wrapper}>
       <TextField
         value={experience.name}
-        label={'Work Place'}
+        label={intl.formatMessage({
+          id: 'employee.form.workExp.name',
+          defaultMessage: 'Work Place'
+        })}
         className={classes.input}
         error={isInvalid}
         onChange={handleChange('name')}
       />
       <TextField
         value={experience.position}
-        label={'Work position'}
+        label={intl.formatMessage({
+          id: 'employee.form.workExp.position',
+          defaultMessage: 'Work position'
+        })}
         className={classes.input}
         error={isInvalid}
         onChange={handleChange('position')}
@@ -75,7 +83,10 @@ export default function WorkExpForm(
     </div>
     <div className={classes.wrapper}>
       <TextField
-        label="Enrollment year"
+        label={intl.formatMessage({
+          id: 'employee.form.workExp.enrollmentYear',
+          defaultMessage: 'Enrollment year'
+        })}
         type="month"
         error={isInvalid}
         className={classes.input}
@@ -87,7 +98,10 @@ export default function WorkExpForm(
         }}
       />
       <TextField
-        label="Finish year"
+        label={intl.formatMessage({
+          id: 'employee.form.workExp.finishYear',
+          defaultMessage: 'Finish year'
+        })}
         type="month"
         error={isInvalid}
         className={classes.input}
@@ -105,7 +119,10 @@ export default function WorkExpForm(
         className={classes.button}
         onClick={handleCancel}
       >
-        Cancel
+        {intl.formatMessage({
+          id: 'common.button.cancel',
+          defaultMessage: 'Cancel'
+        })}
       </Button>
       <Button
         color={'primary'}
@@ -114,7 +131,10 @@ export default function WorkExpForm(
         onClick={handleSave}
         disabled={!isChangedModel}
       >
-        Save
+        {intl.formatMessage({
+          id: 'common.button.save',
+          defaultMessage: 'Save'
+        })}
       </Button>
     </div>
   </>;

@@ -5,9 +5,11 @@ import Layout from '../../components/layout/Layout';
 import ReferenceBookLayout from '../../components/reference-book-layout/ReferenceBookLayout';
 import UnitForm from './UnitForm';
 import {modifyData} from '../../utils/modifyData';
+import {useIntl} from 'react-intl';
 
 export default function Unit() {
   const [unitsList, setUnitsList] = useState([]);
+  const intl = useIntl();
 
   useEffect(() => {
     firebase.database().ref(`/units`)
@@ -40,12 +42,24 @@ export default function Unit() {
     return Object.values(model.value).reduce((result, item) => result && Boolean(item), true);
   }
 
-  return <Layout title={'Unit manager'}>
+  return <Layout title={intl.formatMessage({
+    id: 'unit.title',
+    defaultMessage: 'Unit manager'
+  })}>
     <ReferenceBookLayout
       dataList={unitsList}
-      addButtonText={'Add unit'}
-      newButtonText={'New unit'}
-      updateButtonText={'Update unit'}
+      addButtonText={intl.formatMessage({
+        id: 'unit.addButtonText',
+        defaultMessage: 'Add unit'
+      })}
+      newButtonText={intl.formatMessage({
+        id: 'unit.newButtonText',
+        defaultMessage: 'New unit'
+      })}
+      updateButtonText={intl.formatMessage({
+        id: 'unit.updateButtonText',
+        defaultMessage: 'Update unit'
+      })}
       validator={isValid}
       onAdd={handleAddUnit}
       onUpdate={handleUpdateUnit}

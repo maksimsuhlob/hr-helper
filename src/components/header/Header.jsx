@@ -4,6 +4,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {AppContext} from '../../utils/appContext';
 import {NavLink} from 'react-router-dom';
 import {PermissionKeys} from '../../utils/constants';
+import {FormattedMessage} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,7 +68,15 @@ export default function Header({title}) {
       <Typography variant="h1" className={classes.title}>
         {title}
       </Typography>
-      <Button color="inherit" onClick={handleLogout}>Logout</Button>
+      <Button
+        color="inherit"
+        onClick={handleLogout}
+      >
+        <FormattedMessage
+          id={"header.logout"}
+          defaultMessage={"Logout"}
+        />
+      </Button>
     </Toolbar>
     <Drawer
       anchor={'left'}
@@ -84,7 +93,12 @@ export default function Header({title}) {
                     to={`/${item.route}`}
                     className={classes.link}
                     activeClassName={classes.linkActive}
-                  >{item.route}</NavLink>
+                  >
+                    <FormattedMessage
+                      id={`header.menu.${item.route}`}
+                      defaultMessage={item.route}
+                    />
+                    </NavLink>
                 </div>;
               }
               return null;

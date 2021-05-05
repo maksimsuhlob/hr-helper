@@ -21,6 +21,7 @@ import {modifyData} from '../../utils/modifyData';
 import {jsPDF} from "jspdf";
 import 'jspdf-autotable';
 import PTSans from '../../assets/PTSans-Regular.ttf';
+import {useIntl} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -91,6 +92,7 @@ const schedulerInitial = {
 };
 export default function Scheduler() {
   const classes = useStyles();
+  const intl = useIntl();
   const {addAlert} = useContext(AppContext);
   const [employeeList, setEmployeesList] = useState([]);
   const [unitList, setUnitsList] = useState([]);
@@ -222,33 +224,50 @@ export default function Scheduler() {
     doc.save("a4.pdf");
   }
 
-  return <Layout title={'Scheduler'}>
+  return <Layout title={intl.formatMessage({
+    id: 'scheduler.title',
+    defaultMessage: 'Scheduler'
+  })}>
     <Container className={classes.container} maxWidth={'lg'}>
       <div className={classes.controls}>
         <div className={classes.controlsGroup}>
           <TextField
             value={schedulerModel.value.year}
-            label={'Year'}
+            label={intl.formatMessage({
+              id: 'scheduler.form.year',
+              defaultMessage: 'Year'
+            })}
             className={classes.input}
-            // error={isInvalid}
             onChange={handleChange('year')}
           />
           <FormControl
             variant="outlined"
             className={classes.unit}
           >
-            <InputLabel id="unit-label">Month</InputLabel>
+            <InputLabel id="unit-label">
+              {intl.formatMessage({
+                id: 'scheduler.form.month',
+                defaultMessage: 'Month'
+              })}
+            </InputLabel>
             <Select
               labelId="unit-label"
               value={schedulerModel.value.month}
               onChange={handleChange('month')}
               className={classes.select}
-              label="Month"
-              // error={isInvalid}
+              label={intl.formatMessage({
+                id: 'scheduler.form.month',
+                defaultMessage: 'Month'
+              })}
             >
               {
                 monthList.map((month, i) => {
-                  return <MenuItem key={i} value={i}>{month}</MenuItem>;
+                  return <MenuItem key={i} value={i}>
+                    {intl.formatMessage({
+                      id: `scheduler.month.${month}`,
+                      defaultMessage: month
+                    })}
+                  </MenuItem>;
                 })
               }
             </Select>
@@ -257,12 +276,20 @@ export default function Scheduler() {
             variant="outlined"
             className={classes.unit}
           >
-            <InputLabel id="unit-label">Unit</InputLabel>
+            <InputLabel id="unit-label">
+              {intl.formatMessage({
+                id: 'scheduler.form.unit',
+                defaultMessage: 'Unit'
+              })}
+            </InputLabel>
             <Select
               labelId="unit-label"
               value={schedulerModel.value.unit}
               onChange={handleChange('unit')}
-              label="Unit"
+              label={intl.formatMessage({
+                id: 'scheduler.form.unit',
+                defaultMessage: 'Unit'
+              })}
               className={classes.select}
               // error={isInvalid}
             >
@@ -282,7 +309,10 @@ export default function Scheduler() {
             className={classes.button}
             onClick={handleSaveScheduler}
           >
-            save scheduler
+            {intl.formatMessage({
+              id: 'scheduler.button.save',
+              defaultMessage: 'save scheduler'
+            })}
           </Button>
           <Button
             color={'secondary'}
@@ -291,7 +321,10 @@ export default function Scheduler() {
             disabled={!schedulerModel.id}
             onClick={handleRemoveScheduler}
           >
-            remove scheduler
+            {intl.formatMessage({
+              id: 'scheduler.button.remove',
+              defaultMessage: 'remove scheduler'
+            })}
           </Button>
           <Button
             color={'inherit'}
@@ -299,7 +332,10 @@ export default function Scheduler() {
             className={classes.button}
             onClick={handleSaveToPdf}
           >
-            save to pdf
+            {intl.formatMessage({
+              id: 'scheduler.button.saveToPdf',
+              defaultMessage: 'save to pdf'
+            })}
           </Button>
         </div>
 
@@ -308,7 +344,12 @@ export default function Scheduler() {
         <Table id={'table'} className={classes.table} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableCell}>Employee</TableCell>
+              <TableCell className={classes.tableCell}>
+                {intl.formatMessage({
+                  id: 'scheduler.table.employee',
+                  defaultMessage: 'Employee'
+                })}
+              </TableCell>
               {
                 getDays(schedulerModel).map((day, i) => {
                   return <TableCell key={i} className={classes.tableCell}>{i + 1}</TableCell>;

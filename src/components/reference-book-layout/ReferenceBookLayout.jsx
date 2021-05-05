@@ -5,6 +5,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import 'firebase/database';
+import {useIntl} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -70,6 +71,7 @@ export default function ReferenceBookLayout(
     FormComponent,
   }) {
   const classes = useStyles();
+  const intl = useIntl();
   const [mode, setMode] = useState(Modes.read);
   const [data, setData] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
@@ -161,7 +163,10 @@ export default function ReferenceBookLayout(
               className={classes.button}
               onClick={handleCancel}
             >
-              Cancel
+              {intl.formatMessage({
+                id: 'common.button.cancel',
+                defaultMessage: 'Cancel'
+              })}
             </Button>
             <Button
               color={'primary'}
@@ -209,7 +214,10 @@ export default function ReferenceBookLayout(
                 className={classes.button}
                 onClick={handleCancel}
               >
-                Cancel
+                {intl.formatMessage({
+                  id: 'common.button.cancel',
+                  defaultMessage: 'Cancel'
+                })}
               </Button>
               <Button
                 variant={'contained'}
@@ -217,7 +225,10 @@ export default function ReferenceBookLayout(
                 onClick={handleRemoveItem}
                 color={'secondary'}
               >
-                Remove
+                {intl.formatMessage({
+                  id: 'common.button.remove',
+                  defaultMessage: 'Remove'
+                })}
               </Button>
               <Button
                 color={'primary'}

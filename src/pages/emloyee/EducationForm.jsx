@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, makeStyles, TextField} from '@material-ui/core';
+import {useIntl} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -29,6 +30,7 @@ export default function EducationForm(
     onCancel
   }) {
   const classes = useStyles();
+  const intl = useIntl();
   const [education, setEducation] = useState(educationInitialValue);
   const [isChangedModel, setIsChangedModel] = useState(false);
   useEffect(() => {
@@ -60,14 +62,20 @@ export default function EducationForm(
     <div className={classes.wrapper}>
       <TextField
         value={education.name}
-        label={'Institution'}
+        label={intl.formatMessage({
+          id: 'employee.form.institution.name',
+          defaultMessage: 'Institution'
+        })}
         className={classes.input}
         error={isInvalid}
         onChange={handleChange('name')}
       />
       <TextField
         value={education.type}
-        label={'Institution type'}
+        label={intl.formatMessage({
+          id: 'employee.form.institution.type',
+          defaultMessage: 'Institution type'
+        })}
         className={classes.input}
         error={isInvalid}
         onChange={handleChange('type')}
@@ -75,7 +83,10 @@ export default function EducationForm(
     </div>
     <div className={classes.wrapper}>
       <TextField
-        label="Enrollment year"
+        label={intl.formatMessage({
+          id: 'employee.form.institution.enrollmentYear',
+          defaultMessage: 'Enrollment year'
+        })}
         type="month"
         error={isInvalid}
         className={classes.input}
@@ -87,7 +98,10 @@ export default function EducationForm(
         }}
       />
       <TextField
-        label="Finish year"
+        label={intl.formatMessage({
+          id: 'employee.form.institution.finishYear',
+          defaultMessage: 'Finish year'
+        })}
         type="month"
         error={isInvalid}
         className={classes.input}
@@ -105,7 +119,10 @@ export default function EducationForm(
         className={classes.button}
         onClick={handleCancel}
       >
-        Cancel
+        {intl.formatMessage({
+          id: 'common.button.cancel',
+          defaultMessage: 'Cancel'
+        })}
       </Button>
       <Button
         color={'primary'}
@@ -114,7 +131,10 @@ export default function EducationForm(
         onClick={handleSave}
         disabled={!isChangedModel}
       >
-        Save
+        {intl.formatMessage({
+          id: 'common.button.save',
+          defaultMessage: 'Save'
+        })}
       </Button>
     </div>
   </>;

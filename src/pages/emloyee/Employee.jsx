@@ -5,9 +5,11 @@ import Layout from '../../components/layout/Layout';
 import ReferenceBookLayout from '../../components/reference-book-layout/ReferenceBookLayout';
 import EmployeeForm from './EmployeeForm';
 import {modifyData} from '../../utils/modifyData';
+import {useIntl} from 'react-intl';
 
 export default function Positions() {
   const [employeesList, setEmployeesList] = useState([]);
+  const intl = useIntl();
 
   useEffect(() => {
     firebase.database().ref(`/employees`)
@@ -39,12 +41,24 @@ export default function Positions() {
     return Object.values(model.value).reduce((result, item) => result && Boolean(item), true);
   }
 
-  return <Layout title={'Employee manager'}>
+  return <Layout title={intl.formatMessage({
+    id: 'employee.title',
+    defaultMessage: 'Employee manager'
+  })}>
     <ReferenceBookLayout
       dataList={employeesList}
-      addButtonText={'Add employee'}
-      newButtonText={'New employee'}
-      updateButtonText={'Update employee'}
+      addButtonText={intl.formatMessage({
+        id: 'employee.addButtonText',
+        defaultMessage: 'Add employee'
+      })}
+      newButtonText={intl.formatMessage({
+        id: 'employee.newButtonText',
+        defaultMessage: 'New employee'
+      })}
+      updateButtonText={intl.formatMessage({
+        id: 'employee.updateButtonText',
+        defaultMessage: 'Update employee'
+      })}
       dataViewParam={['lastName', 'firstName']}
       validator={isValid}
       onAdd={handleAddEmployee}
