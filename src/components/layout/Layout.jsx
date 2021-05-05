@@ -6,11 +6,14 @@ import Header from '../../components/header/Header';
 const useStyles = makeStyles((theme) => ({
   main: {
     height: '100vh',
+    display: 'flex',
+    flexDirection: 'column'
   },
   container: {
     display: 'flex',
     flexDirection: 'column',
-    marginTop: 30
+    marginTop: 30,
+    flex: '1 1 auto'
   },
   input: {
     marginBottom: '20px',
@@ -18,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
   },
   pageTitle: {
     fontSize: 24
+  },
+  footer: {
+    textAlign: 'center',
+    padding: 20,
+    fontSize: 20
   }
 }));
 export default function Layout(
@@ -32,5 +40,8 @@ export default function Layout(
     <Container className={classes.container} maxWidth={'lg'}>
       {children}
     </Container>
+    <footer className={classes.footer}>
+      HR Helper© 2021
+    </footer>
   </div>;
 }
