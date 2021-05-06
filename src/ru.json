@@ -96,7 +96,7 @@
   "staffingTable.table.head.salary": "Заработная плата",
   "staffingTable.table.head.seniorityBonus": "Надбавка за опыт",
   "staffingTable.table.head.difficultBonus": "Надбавка за сложность",
-  "staffingTable.table.head.contractBonus": "Надбавка за контракт",
+  "staffingTable.table.head.rate": "Ставка",
   "staffingTable.table.head.total": "Всего",
   "staffingTable.table.head.description": "Дополнительная информация",
   "staffingTable.button.new": "Новое расписание",

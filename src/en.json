@@ -95,7 +95,7 @@
   "staffingTable.table.head.salary": "salary",
   "staffingTable.table.head.seniorityBonus": "seniority bonus",
   "staffingTable.table.head.difficultBonus": "difficult bonus",
-  "staffingTable.table.head.contractBonus": "contract bonus",
+  "staffingTable.table.head.rate": "rate",
   "staffingTable.table.head.total": "total",
   "staffingTable.table.head.description": "description",
   "staffingTable.button.new": "new table",

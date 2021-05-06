@@ -77,7 +77,6 @@ const useStyles = makeStyles((theme) => ({
   headerButton: {
     display: 'block',
     margin: '10px 20px 10px 10px',
-    maxWidth: '100px'
   },
   tableCell: {
     borderRight: '1px solid #eee',
@@ -119,10 +118,10 @@ const positionModel = {
   unitId: null,
   position: null,
   number: null,
+  rate: null,
   salary: 0,
   seniorityBonus: 0,
   difficultBonus: 0,
-  contractBonus: 0,
   total: 0,
   description: null,
 };
@@ -140,10 +139,10 @@ const staffingTableFields = {
   unitName: 'unit',
   positionName: 'position',
   number: 'number of employees',
+  rate: 'rate',
   salary: 'salary',
   seniorityBonus: 'seniority bonus',
   difficultBonus: 'difficult bonus',
-  contractBonus: 'contract bonus',
   total: 'total',
   description: 'description'
 };
@@ -208,8 +207,7 @@ export default function StaffingTable() {
       newModel.value.rows[unitIdx].position[positionIdx].total =
         parseInt(newModel.value.rows[unitIdx].position[positionIdx].salary) +
         parseInt(newModel.value.rows[unitIdx].position[positionIdx].seniorityBonus) +
-        parseInt(newModel.value.rows[unitIdx].position[positionIdx].difficultBonus) +
-        parseInt(newModel.value.rows[unitIdx].position[positionIdx].contractBonus);
+        parseInt(newModel.value.rows[unitIdx].position[positionIdx].difficultBonus);
       setStaffingTableModel(newModel);
     };
   }
@@ -595,7 +593,7 @@ export default function StaffingTable() {
                                           </FormControl> :
                                           <input
                                             className={classes.inputField}
-                                            type={['salary', 'seniorityBonus', 'difficultBonus', 'contractBonus'].includes(field) ? 'number' : "text"}
+                                            type={['salary', 'seniorityBonus', 'difficultBonus'].includes(field) ? 'number' : "text"}
                                             disabled={field === 'total'}
                                             value={position[field]}
                                             onChange={handleChange(field, unitIdx, positionIdx)}
