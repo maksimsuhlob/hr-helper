@@ -60,6 +60,12 @@ const useStyles = makeStyles((theme) => ({
     padding: 5,
     textAlign: 'center'
   },
+  tableCellYellow: {
+    backgroundColor: 'rgba(255,255,0,0.3)'
+  },
+  tableCellRed: {
+    backgroundColor: 'rgba(255,0,0 ,0.3)'
+  },
   wDay: {
     width: 20,
     border: 'none',
@@ -148,7 +154,11 @@ export default function Scheduler() {
         .map(employee => ({
           employeeId: employee.id,
           fullName: getEmployeeName(employee.id),
-          days: getDays(newSchedulerModel).map((day, i) => ({day: i + 1, value: null}))
+          days: getDays(newSchedulerModel).map((day, i) => ({
+            day: i + 1,
+            value: null,
+            weekDay: new Date(schedulerModel.value.year, schedulerModel.value.month, i + 1).getDay()
+          }))
         }));
 
       setSchedulerModel(newSchedulerModel);
@@ -175,7 +185,7 @@ export default function Scheduler() {
                 const days = item.days.map(itemDay => {
                   if (itemDay.day === day.day) {
                     return {
-                      day: itemDay.day,
+                      ...itemDay,
                       value: e.target.innerText
                     };
                   }
@@ -358,6 +368,12 @@ export default function Scheduler() {
                   return <TableCell key={i} className={classes.tableCell}>{i + 1}</TableCell>;
                 })
               }
+              <TableCell className={classes.tableCell}>
+                {intl.formatMessage({
+                  id: 'scheduler.table.sum',
+                  defaultMessage: 'Sum'
+                })}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -368,7 +384,10 @@ export default function Scheduler() {
                 </TableCell>
                 {
                   row.days.map((day, i) => {
-                    return <TableCell key={i} className={classes.tableCell}>
+                    return <TableCell
+                      key={i}
+                      className={`${classes.tableCell} ${day.weekDay === 6 && classes.tableCellYellow} ${day.weekDay === 0 && classes.tableCellRed}`}
+                    >
                       <div
                         contentEditable
                         onBlur={handleChangeWorkDay(row.employeeId, day)}
@@ -379,6 +398,15 @@ export default function Scheduler() {
                     </TableCell>;
                   })
                 }
+                <TableCell component="th" scope="row" className={classes.tableCell}>
+                  {row.days.reduce((acc, item) => {
+                    if (item.value && parseInt(item.value)) {
+                      return acc + parseInt(item.value);
+                    }
+
+                    return acc;
+                  }, 0)}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

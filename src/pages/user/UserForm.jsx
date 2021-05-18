@@ -94,7 +94,7 @@ export default function UserForm({model = userInitialValue, isInvalid, onChange}
         >
           {
             roleList.map(role => {
-              return <MenuItem key={role.id} value={role.value.name}>{role.value.name}</MenuItem>;
+              return <MenuItem key={role.id} value={role.id}>{role.value.name}</MenuItem>;
             })
           }
         </Select>

@@ -64,6 +64,7 @@
   "roles.form.permission.user": "Управление пользователями",
   "roles.form.permission.positions": "Управление должностями",
   "roles.form.permission.staffingTable": "Управление штатным расписанием",
+  "roles.remove.notification": "Нескольким пользователям присвоена эта роль",
 
   "scheduler.title": "Управление табелем рабочего времени",
   "scheduler.form.unit": "Подразделение",
@@ -86,6 +87,7 @@
   "scheduler.button.saveToPdf": "Сохранить в PDF",
   "scheduler.table.employee": "Сотрудники",
   "scheduler.notification": "Табель рабочего времени сохранен",
+  "scheduler.table.sum": "Итого",
 
   "staffingTable.title": "Управление штатным расписанием",
   "staffingTable.tableList.label": "Штатное расписание",

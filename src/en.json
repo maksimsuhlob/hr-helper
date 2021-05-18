@@ -63,6 +63,7 @@
   "roles.form.permission.user": "user",
   "roles.form.permission.positions": "positions",
   "roles.form.permission.staffingTable": "staffing Table",
+  "roles.remove.notification": "Some users have this role",
 
   "scheduler.title": "Scheduler",
   "scheduler.form.unit": "Unit",
@@ -85,6 +86,7 @@
   "scheduler.button.saveToPdf": "save to pdf",
   "scheduler.table.employee": "Employee",
   "scheduler.notification": "scheduler saved",
+  "scheduler.table.sum": "Sum",
 
   "staffingTable.title": "Staffing Table",
   "staffingTable.tableList.label": "Staffing Table",

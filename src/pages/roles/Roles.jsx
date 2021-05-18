@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import Layout from '../../components/layout/Layout';
@@ -6,20 +6,38 @@ import ReferenceBookLayout from '../../components/reference-book-layout/Referenc
 import RolesForm from './RolesForm';
 import {modifyData} from '../../utils/modifyData';
 import {useIntl} from 'react-intl';
+import {AppContext} from '../../utils/appContext';
 
 export default function Roles() {
   const [roleList, setRoleList] = useState([]);
+  const [userList, setUserList] = useState([]);
   const intl = useIntl();
+  const {addAlert} = useContext(AppContext);
 
   useEffect(() => {
     firebase.database().ref(`/roles`)
       .on('value', data => {
         setRoleList(modifyData(data));
       });
-    return () => firebase.database().ref(`/roles`).off();
+    firebase.database().ref(`/users`)
+      .on('value', data => {
+        setUserList(modifyData(data));
+      });
+    return () => {
+      firebase.database().ref(`/roles`).off();
+      firebase.database().ref(`/users`).off();
+    };
   }, []);
 
   function handleRemoveRole(model) {
+   const usersWithRole = userList.filter(item => item.value.role === model.id);
+    if(usersWithRole.length){
+      addAlert(intl.formatMessage({
+        id: 'roles.remove.notification',
+        defaultMessage: 'Some users have this role'
+      }));
+      return;
+    }
     firebase.database().ref(`/roles/${model.id}`).remove()
       .catch(e => console.log(e));
   }
@@ -40,9 +58,9 @@ export default function Roles() {
   }
 
   return <Layout title={intl.formatMessage({
-        id: 'roles.title',
-        defaultMessage: 'Roles manager'
-      })}>
+    id: 'roles.title',
+    defaultMessage: 'Roles manager'
+  })}>
     <ReferenceBookLayout
       dataList={roleList}
       addButtonText={intl.formatMessage({

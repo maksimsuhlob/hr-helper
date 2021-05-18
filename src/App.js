@@ -79,7 +79,7 @@ function App() {
 
   function isAuthorized(permission) {
     if (state.profile && state.roles) {
-      const role = Object.values(state.roles).find(role => role.name === state.profile.role);
+      const role = state.roles[state.profile.role];
       if (role) {
         return role.permissions.includes(permission);
       }
